@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.authors = ["costajob"]
   s.email = ["costajob@gmail.com"]
 
-  s.required_ruby_version = ">= 2.2.1"
+  s.required_ruby_version = ">= 2.1.8"
   s.summary = "A tiny library to visualize and count gem dependencies recursively"
   s.homepage = "https://github.com/costajob/lapidarius"
 
