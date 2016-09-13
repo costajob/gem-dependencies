@@ -38,4 +38,12 @@ describe Lapidarius::Gem do
   it "must prevent adding a wrong dependency" do
     -> { sinatra << "tilt" }.must_raise Lapidarius::Gem::KindError
   end
+
+  it "must be printable" do
+    rack = Lapidarius::Gem.new(name: "rack", version: "~> 1.5")
+    rack_protection = Lapidarius::Gem.new(name: "rack-protection", version: "~> 1.4")
+    tilt = Lapidarius::Gem.new(name: "tilt", version: "< 3, >= 1.3")
+    sinatra = Lapidarius::Gem.new(name: "sinatra", version: "1.4.7", deps: [rack, rack_protection, tilt])
+    sinatra.to_s.must_equal "sinatra (1.4.7)\n  rack (~> 1.5, runtime)\n  rack-protection (~> 1.4, runtime)\n  tilt (< 3, >= 1.3, runtime)\n\n"
+  end
 end

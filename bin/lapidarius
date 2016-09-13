@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+lib = File.expand_path("../../lib", __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+require "lapidarius"
+
+gem = ARGV.fetch(0) { fail ArgumentError, "plase specify a gem name to be cut"}
+include_dev = !!ARGV[1]
+cutter = Lapidarius::Cutter.new(gem: gem, include_dev: include_dev)
+renderer = Lapidarius::Renderer::new(cutter.call)
+renderer.call

@@ -15,11 +15,11 @@ module Lapidarius
 
     attr_reader :name, :version, :env
 
-    def initialize(name:, version:, env: Env::RUNTIME)
+    def initialize(name:, version:, env: Env::RUNTIME, deps: [])
       @name = name
       @version = version
       @env = env
-      @deps = []
+      @deps = deps
     end
 
     def deps(env = :all)
@@ -35,6 +35,23 @@ module Lapidarius
     def ==(gem)
       return false unless gem?(gem)
       gem.name == name && gem.version == version && gem.env == env
+    end
+
+    def to_s
+      "#{name} (#{version})\n".tap do |s|
+        deps.each do |dep|
+          s << "  #{dep.name} (#{dep.version}, #{dep.env})\n"
+        end
+        s << "\n"
+      end
+    end
+
+    def runtime?
+      @env == Env::RUNTIME
+    end
+
+    def development?
+      @env == Env::DEVELOPMENT
     end
 
     private def gem?(gem)
