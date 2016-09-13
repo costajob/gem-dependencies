@@ -1,4 +1,3 @@
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'gem_dependencies'
-
-require 'minitest/autorun'
+$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+require "lapidarius"
+require "minitest/autorun"
