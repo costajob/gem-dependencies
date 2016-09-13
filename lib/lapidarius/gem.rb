@@ -2,8 +2,6 @@ require "lapidarius/env"
 
 module Lapidarius
   class Gem
-    include Env::Affected
-
     class KindError < ArgumentError; end
 
     def self.factory(name)
@@ -15,7 +13,7 @@ module Lapidarius
       end
     end
 
-    attr_reader :name, :version
+    attr_reader :name, :version, :env
 
     def initialize(name:, version:, env: Env::RUNTIME)
       @name = name
@@ -26,8 +24,7 @@ module Lapidarius
 
     def deps(env = :all)
       return @deps.clone if env == :all
-      return @deps.select(&:runtime?) if env == Env::RUNTIME.to_sym
-      return @deps.select(&:development?) if env == Env::DEVELOPMENT.to_sym
+      @deps.select { |dep| dep.env == env.to_s }
     end
 
     def <<(dep)
