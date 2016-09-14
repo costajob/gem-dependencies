@@ -19,8 +19,8 @@ module Lapidarius
       development = @deps.select(&:development?)
       @out << "\n"
       @out << hr("#{@gem.name} (#{@gem.version})")
-      @out << "  runtime gems:".ljust(20) + "#{runtime.size}\n"
-      @out << "  development gems:".ljust(20) + "#{development.size}\n\n"
+      @out << "  runtime gems:".ljust(23) + "#{runtime.size}\n"
+      @out << "  development gems:".ljust(23) + "#{development.size}\n\n"
       if !runtime.empty?
         @out << hr("runtime gems:")
         runtime.each do |dep|
