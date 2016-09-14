@@ -22,7 +22,7 @@ The *bundle viz* command relies on the Gemfile and the [graphviz](http://www.gra
 I found difficult to count the number of unique dependencies.
 
 ## Usage
-This gem relies on the *Rubygems::Commands::DependencyCommand* class, calling it multiple times to deeply fetch dependencies.
+This gem relies on the *Gem::Commands::DependencyCommand* class, invoking it multiple times to deeply fetch dependencies.
 
 ### Runtime dependencies
 Just specify the name of the gem you want to scan:
