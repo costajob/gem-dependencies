@@ -14,30 +14,43 @@ module Lapidarius
 
     def out
       return @out unless @out.empty?
-      @deps ||= footprint
-      runtime = @deps.select(&:runtime?)
-      development = @deps.select(&:development?)
-      @out << "\n"
-      @out << hr("#{@gem.name} (#{@gem.version})")
-      @out << "  runtime gems:".ljust(23) + "#{runtime.size}\n"
-      @out << "  development gems:".ljust(23) + "#{development.size}\n\n"
-      if !runtime.empty?
-        @out << hr("runtime gems:")
-        runtime.each do |dep|
-          @out << dep.to_s
+      @out.tap do |out| 
+        out << header
+        [Env::RUNTIME, Env::DEVELOPMENT].each do |env|
+          body(env)
         end
       end
-      if !development.empty?
-        @out << hr("development gems:")
-        development.each do |dep|
-          @out << dep.to_s
-        end
-      end
-      @out
     end
 
-    private def hr(title = nil)
-      "#{title}\n#{"-" * 25}\n"
+    private def header
+      "\n#{@gem.name} (#{@gem.version}):\n\n"
+    end
+
+    private def title(env)
+      "\n#{env} gems".ljust(23) << "#{deps(env).size}".rjust(3) << "\n" << hr
+    end
+
+    private def hr
+      "#{"-" * 25}\n\n"
+    end
+
+    private def body(env)
+      return unless deps?(env)
+      @out << title(env)
+      deps(env).each do |dep|
+        @out << dep.to_s
+      end
+    end
+
+    private def deps(env = :all)
+      @deps ||= footprint
+      return @deps if env == :all
+      @deps.select { |dep| dep.env == env }
+    end
+
+    private def deps?(env = :all)
+      return !deps.empty? if env == :all
+      !deps(env).empty?
     end
 
     private def footprint(gem = @gem)
