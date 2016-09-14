@@ -5,7 +5,8 @@
     * [gem dep](#gem-dep)
     * [bundle viz](#bundle-viz)
 * [Usage](#usage)
-  * [Include development gems](#include-development-gems)
+  * [Runtime dependencies](#runtime-dependencies)
+  * [Include development dependencies](#include-development-dependencies)
 
 ## Scope
 This gem is aimed to list in a straightforward way the dependencies tree if the specified gem.
@@ -14,14 +15,17 @@ This gem is aimed to list in a straightforward way the dependencies tree if the 
 Some alternatives exists: 
 
 #### gem dep
-The standard *gem dep* command just unearth one level of dependencies, while often i neet to get the whole footprint.  
+The standard *gem dep* command just unearth one level of dependencies.
 
 #### bundle viz
 The *bundle viz* command relies on the Gemfile and the [graphviz](http://www.graphviz.org/) library to generate a visual representation of the gem inter-dependencies.  
-It's a useful tool, but it's heavyweight, considering i mostly just need to count the number of dependencies.
+I found difficult to count the number of unique dependencies.
 
 ## Usage
-This gem relies on the *gem dep* command, calling it multiple times for recursiveness.
+This gem relies on the *Rubygems::Commands::DependencyCommand* class, calling it multiple times to deeply fetch dependencies.
+
+### Runtime dependencies
+Just specify the name of the gem you want to scan:
 ```
 $ ./bin/lapidarius sinatra
 
@@ -42,9 +46,8 @@ tilt (< 3, >= 1.3)
 
 ```
 
-### Include development gems
-In case you need to list also the gems dependencies for development, you have to specify a second argument.  
-Consider only the development gems installed on your system are scanned for dependencies.
+### Include development dependencies
+In case you need to list also the gems dependencies for development, you have to specify the DEV flag (*-d*, *-dev* or *--development*)
 ```
 $ ./bin/lapidarius sinatra -dev
 
@@ -88,3 +91,5 @@ rack-test (>= 0)
 rspec (~> 2.0)
 
 ```
+
+Consider only the gems installed on your system are scanned for their own dependencies, no remote fetching is performed.
