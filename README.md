@@ -27,8 +27,8 @@ $ ./bin/lapidarius sinatra
 
 sinatra (1.4.7)
 -------------------------
-  runtime gems (installed): 3
-  development gems (found): 0
+  runtime gems:     3
+  development gems: 0
 
 runtime gems:
 -------------------------
@@ -43,13 +43,15 @@ tilt (< 3, >= 1.3)
 ```
 
 ### Include development gems
-In case you need to list also the gems dependencies for development, you have to specify a second argument:
+In case you need to list also the gems dependencies for development, you have to specify a second argument.  
+Consider only the development gems installed on your system are scanned for dependencies.
 ```
+$ ./bin/lapidarius sinatra -dev
 
 sinatra (1.4.7)
 -------------------------
-  runtime gems (installed): 3
-  development gems (found): 7
+  runtime gems:     3
+  development gems: 7
 
 runtime gems:
 -------------------------
@@ -85,6 +87,4 @@ rack-test (>= 0)
 
 rspec (~> 2.0)
 
-
 ```
-Consider only the development gem installed on your system are scanned for dependencies.

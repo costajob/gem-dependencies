@@ -1,10 +1,12 @@
 require "lapidarius/gem"
+require "lapidarius/command"
 
 module Lapidarius
   class Cutter
-    def initialize(gem:, include_dev: false)
+    def initialize(gem:, include_dev: false, cmd_klass: Command)
       @gem = gem
       @include_dev = include_dev
+      @cmd = cmd_klass.new
     end
 
     def call(src = cmd, gem = nil)
@@ -29,7 +31,7 @@ module Lapidarius
     end
 
     private def cmd(gem = @gem)
-      %x(gem dep /^#{gem}$/)
+      @cmd.call(gem)
     end
   end
 end

@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Lapidarius::Cutter do
   it "must cut gem with runtime dependencies" do
-    cutter = Lapidarius::Cutter.new(gem: "sinatra")
+    cutter = Lapidarius::Cutter.new(gem: "sinatra", cmd_klass: Mocks::Command)
     gem = cutter.call
     gem.must_be_instance_of Lapidarius::Gem
     gem.deps.size.must_equal 3
@@ -12,7 +12,7 @@ describe Lapidarius::Cutter do
   end
 
   it "must cut gem with all dependencies" do
-    cutter = Lapidarius::Cutter.new(gem: "sinatra", include_dev: true)
+    cutter = Lapidarius::Cutter.new(gem: "sinatra", include_dev: true, cmd_klass: Mocks::Command)
     gem = cutter.call
     rack = gem.deps[0]
     rack.must_be_instance_of Lapidarius::Gem
