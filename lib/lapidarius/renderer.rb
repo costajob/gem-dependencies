@@ -2,6 +2,8 @@ module Lapidarius
   class Renderer
     class NoEntGemError< ArgumentError; end
 
+    NO_DEPENDENCIES = "\ngem has no dependencies...\n\n"
+
     def initialize(gem)
       fail NoEntGemError, "gem not found on this system!" unless gem
       @gem = gem
@@ -14,6 +16,7 @@ module Lapidarius
 
     def out
       return @out unless @out.empty?
+      return NO_DEPENDENCIES unless deps?
       @out.tap do |out| 
         out << header
         [Env::RUNTIME, Env::DEVELOPMENT].each do |env|
