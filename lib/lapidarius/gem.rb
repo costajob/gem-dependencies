@@ -8,7 +8,7 @@ module Lapidarius
       name.match(/Gem ([a-z0-9\-_]+)-(\d{1,2}\.\d{1,3}\.\d{1,2})/) do |m|
         return new(name: m[1], version: m[2])
       end
-      name.match(/([a-z0-9\-_]+) \(([0-9~<>,= \.]+)(?:, (development))?\)/) do |m|
+      name.match(/([a-z0-9\-_]+) \(([0-9~<>,= \.]+)(?:, (#{Env::DEVELOPMENT}))?\)/) do |m|
         return new(name: m[1], version: m[2], env: m[3] || Env::RUNTIME)
       end
     end
@@ -18,13 +18,13 @@ module Lapidarius
     def initialize(name:, version:, env: Env::RUNTIME, deps: [])
       @name = name
       @version = version
-      @env = env
+      @env = env.to_sym
       @deps = deps
     end
 
     def deps(env = :all)
       return @deps.clone if env == :all
-      @deps.select { |dep| dep.env == env.to_s }
+      @deps.select { |dep| dep.env == env }
     end
 
     def <<(dep)
