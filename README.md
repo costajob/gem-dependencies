@@ -31,64 +31,36 @@ $ ./bin/lapidarius sinatra
 
 sinatra (1.4.7):
 
-
-runtime gems            3
+RUNTIME GEMS            3
 -------------------------
-
-rack (~> 1.5, runtime)
-
-rack-protection (~> 1.4, runtime)
-  rack (>= 0, runtime)
-
-tilt (< 3, >= 1.3, runtime)
+rack (~> 1.5)
+rack-protection (~> 1.4)
+tilt (< 3, >= 1.3)
 
 ```
 
 ### Include development dependencies
 In case you need to list also the gems dependencies for development, you have to specify the DEV flag (*-d*, *-dev* or *--development*)
 ```
-$ ./bin/lapidarius sinatra --development
+$ ./bin/lapidarius sinatra -d
 
 sinatra (1.4.7):
 
-
-runtime gems            3
+RUNTIME GEMS            3
 -------------------------
+rack (~> 1.5)
+rack-protection (~> 1.4)
+tilt (< 3, >= 1.3)
 
-rack (~> 1.5, runtime)
-  bacon (>= 0, development)
-  rake (>= 0, development)
-
-rack-protection (~> 1.4, runtime)
-  rack (>= 0, runtime)
-  rack-test (>= 0, development)
-  rspec (~> 2.0, development)
-
-tilt (< 3, >= 1.3, runtime)
-
-
-development gems        7
+DEVELOPMENT GEMS        7
 -------------------------
-
-bacon (>= 0, development)
-
-rake (>= 0, development)
-  hoe (~> 3.13, development)
-  minitest (~> 5.4, development)
-  rdoc (~> 4.0, development)
-
-hoe (~> 3.13, development)
-
-minitest (~> 5.4, development)
-  hoe (~> 3.14, development)
-  rdoc (~> 4.0, development)
-
-rdoc (~> 4.0, development)
-
-rack-test (>= 0, development)
-  rack (>= 1.0, runtime)
-
-rspec (~> 2.0, development)
+bacon (>= 0)
+rake (>= 0)
+hoe (~> 3.13)
+minitest (~> 5.4)
+rdoc (~> 4.0)
+rack-test (>= 0)
+rspec (~> 2.0)
 
 ```
 

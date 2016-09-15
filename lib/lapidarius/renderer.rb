@@ -30,11 +30,11 @@ module Lapidarius
     end
 
     private def title(env)
-      "\n#{env} gems".ljust(23) << "#{deps(env).size}".rjust(3) << "\n" << hr
+      "#{env} gems".ljust(22).upcase << "#{deps(env).size}".rjust(3) << "\n" << hr
     end
 
     private def hr
-      "#{"-" * 25}\n\n"
+      "#{"-" * 25}\n"
     end
 
     private def body(env)
@@ -43,6 +43,7 @@ module Lapidarius
       deps(env).each do |dep|
         @out << dep.to_s
       end
+      @out << "\n"
     end
 
     private def deps(env = :all)
