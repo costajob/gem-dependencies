@@ -38,9 +38,9 @@ module Lapidarius
     end
 
     def to_s
-      "#{name} (#{version})\n".tap do |s|
+      "#{summary}\n".tap do |s|
         deps.each do |dep|
-          s << "  #{dep.name} (#{dep.version}, #{dep.env})\n"
+          s << "  #{summary(dep)}\n"
         end
         s << "\n"
       end
@@ -52,6 +52,10 @@ module Lapidarius
 
     def development?
       @env == Env::DEVELOPMENT
+    end
+
+    protected def summary(gem = self)
+      "#{gem.name} (#{gem.version}, #{gem.env})"
     end
 
     private def gem?(gem)
