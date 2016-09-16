@@ -3,9 +3,10 @@ require "lapidarius/command"
 
 module Lapidarius
   class Cutter
-    def initialize(gem:, include_dev: false, cmd_klass: Command)
+    DEVELOPMENT = "development"
+
+    def initialize(gem:, cmd_klass: Command)
       @gem = gem
-      @include_dev = include_dev
       @cmd = cmd_klass.new
     end
 
@@ -26,7 +27,7 @@ module Lapidarius
       src = src.split(/\n\n/).first
       src.split("\n").tap do |tokens|
         tokens.map!(&:strip)
-        tokens.reject! { |token| token.match(/#{Env::DEVELOPMENT}/) } unless @include_dev
+        tokens.reject! { |token| token.match(/#{DEVELOPMENT}/) }
       end
     end
 

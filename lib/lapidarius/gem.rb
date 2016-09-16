@@ -1,5 +1,3 @@
-require "lapidarius/env"
-
 module Lapidarius
   class Gem
     class KindError < ArgumentError; end
@@ -11,23 +9,17 @@ module Lapidarius
       name.match(/Gem ([a-z0-9\-_]+)-(\d{1,2}\.\d{1,3}\.\d{1,2})/) do |m|
         return new(name: m[1], version: m[2])
       end
-      name.match(/([a-z0-9\-_]+) \(([0-9~<>,= \.]+)(?:, (#{Env::DEVELOPMENT}))?\)/) do |m|
-        return new(name: m[1], version: m[2], env: m[3] || Env::RUNTIME)
+      name.match(/([a-z0-9\-_]+) \(([0-9~<>=, \.]+)\)/) do |m|
+        return new(name: m[1], version: m[2])
       end
     end
 
-    attr_reader :name, :version, :env
+    attr_reader :name, :version, :deps
 
-    def initialize(name:, version:, env: Env::RUNTIME, deps: [])
+    def initialize(name:, version:, deps: [])
       @name = name
       @version = version
-      @env = env.to_sym
       @deps = deps
-    end
-
-    def deps(env = :all)
-      return @deps.clone if env == :all
-      @deps.select { |dep| dep.env == env }
     end
 
     def <<(dep)
@@ -37,7 +29,7 @@ module Lapidarius
 
     def ==(gem)
       return false unless gem?(gem)
-      gem.name == name && gem.version == version && gem.env == env
+      gem.name == name && gem.version == version
     end
 
     def to_s(recursive: false)
@@ -52,15 +44,20 @@ module Lapidarius
     end
 
     def fullname
-      "#{name} (#{version}, #{env})"
+      "#{name} (#{version})"
     end
 
-    def runtime?
-      @env == Env::RUNTIME
+    def count_nested_deps
+      flatten_deps.size
     end
 
-    def development?
-      @env == Env::DEVELOPMENT
+    protected def flatten_deps
+      all = deps.reduce(deps.clone) do |acc, dep|
+        acc.concat dep.flatten_deps
+      end
+      all.flatten!
+      all.uniq!(&:name)
+      all
     end
 
     private def indentation(depth = STACK_DEPTH)
@@ -70,7 +67,7 @@ module Lapidarius
     end
 
     private def gem?(gem)
-      %i{name version env deps}.all? { |msg| gem.respond_to?(msg) }
+      %i{name version deps}.all? { |msg| gem.respond_to?(msg) }
     end
   end
 end

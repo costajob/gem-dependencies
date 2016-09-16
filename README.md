@@ -5,12 +5,11 @@
     * [gem dep](#gem-dep)
     * [bundle viz](#bundle-viz)
 * [Usage](#usage)
-  * [Runtime dependencies](#runtime-dependencies)
-  * [Include development dependencies](#include-development-dependencies)
+  * [First level dependencies](#first-level-dependencies)
   * [Recursive print](#recursive-print)
 
 ## Scope
-This gem is aimed to list in a straightforward way the dependencies tree if the specified gem.
+This gem is aimed to list recursively the **runtime dependencies** footprint of the specified gem.
 
 ### Alternatives
 Some alternatives exists: 
@@ -25,29 +24,31 @@ I found difficult to count the number of unique dependencies.
 ## Usage
 This gem relies on the *Gem::Commands::DependencyCommand* class, invoking it multiple times to deeply fetch dependencies.
 
-### Runtime dependencies
+### First level dependencies
 Just specify the name of the gem you want to scan:
 ```
 $ ./bin/lapidarius --gem=sinatra
 
-sinatra (1.4.7):
+sinatra (1.4.7)         3
+-------------------------
+rack (~> 1.5)
+rack-protection (~> 1.4)
+tilt (< 3, >= 1.3)
 
-runtime gems                      3
------------------------------------
-rack (~> 1.5, runtime)
-rack-protection (~> 1.4, runtime)
-tilt (< 3, >= 1.3, runtime)
-
-```
-
-### Include development dependencies
-In case you need to list also the gems dependencies for development, you have to specify the DEV flag:
-```
 ```
 
 ### Recursive print
-To print the gem dependencies recursively, privide the RECURSIVE flag:
+To print the gem runtime dependencies recursively, provide the RECURSIVE flag:
 ```
+$ ./bin/lapidarius --gem=sinatra --recursive
+
+sinatra (1.4.7)         3
+-------------------------
+rack (~> 1.5)
+rack-protection (~> 1.4)
+  rack (>= 0)
+tilt (< 3, >= 1.3)
+
 ```
 
 Consider only the gems installed on your system are scanned for their own dependencies, no remote fetching is performed.

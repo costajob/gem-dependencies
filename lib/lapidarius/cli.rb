@@ -20,7 +20,7 @@ module Lapidarius
 
     private def parser
       OptionParser.new do |opts|
-        opts.banner = "Usage: ./bin/lapidarius --gem=sinatra --recursive --development"
+        opts.banner = "Usage: ./bin/lapidarius --gem=sinatra --recursive"
 
         opts.on("-gGEM", "--gem=GEM", "The gem name to scan") do |gem|
           @gem = gem
@@ -28,10 +28,6 @@ module Lapidarius
 
         opts.on("-r", "--recursive", "Print dependencies recursively") do |recursive|
           @recursive = recursive
-        end
-
-        opts.on("-d", "--development", "Include development dependencies") do |include_dev|
-          @include_dev = include_dev
         end
 
         opts.on("-h", "--help", "Prints this help") do
@@ -42,7 +38,7 @@ module Lapidarius
     end
 
     private def cutter(cmd_klass)
-      @cutter = Lapidarius::Cutter.new(gem: @gem, cmd_klass: cmd_klass, include_dev: @include_dev)
+      @cutter = Lapidarius::Cutter.new(gem: @gem, cmd_klass: cmd_klass)
     end
 
     private def renderer(gem)
