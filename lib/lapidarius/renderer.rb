@@ -2,11 +2,13 @@ module Lapidarius
   class Renderer
     class NoEntGemError< ArgumentError; end
 
-    NO_DEPENDENCIES = "\ngem has no dependencies...\n\n"
+    HR_WIDTH = 35
+    NBR_WIDTH = 3 
 
-    def initialize(gem)
+    def initialize(gem:, recursive: false)
       fail NoEntGemError, "gem not found on this system!" unless gem
       @gem = gem
+      @recursive = recursive
       @out = []
     end
 
@@ -15,12 +17,10 @@ module Lapidarius
     end
 
     def out
-      return @out unless @out.empty?
-      return NO_DEPENDENCIES unless deps?
       @out.tap do |out| 
         out << header
-        [Env::RUNTIME, Env::DEVELOPMENT].each do |env|
-          body(env)
+        [Env::RUNTIME, Env::DEVELOPMENT].each_with_index do |env, i|
+          body(env, i)
         end
       end
     end
@@ -29,41 +29,27 @@ module Lapidarius
       "\n#{@gem.name} (#{@gem.version}):\n\n"
     end
 
-    private def title(env)
-      "#{env} gems".ljust(22).upcase << "#{deps(env).size}".rjust(3) << "\n" << hr
-    end
-
-    private def hr
-      "#{"-" * 25}\n"
-    end
-
-    private def body(env)
-      return unless deps?(env)
-      @out << title(env)
-      deps(env).each do |dep|
-        @out << dep.to_s
+    private def body(env, index)
+      group = deps_groups[index]
+      return if group.empty?
+      @out << title(env, group)
+      group.each do |dep|
+        @out << dep.to_s(recursive: @recursive)
       end
       @out << "\n"
     end
 
-    private def deps(env = :all)
-      @deps ||= footprint
-      return @deps if env == :all
-      @deps.select { |dep| dep.env == env }
+    private def title(env, group)
+      "#{env} gems".ljust(HR_WIDTH - NBR_WIDTH) << "#{group.size}".rjust(NBR_WIDTH) << "\n" << hr
     end
 
-    private def deps?(env = :all)
-      return !deps.empty? if env == :all
-      !deps(env).empty?
+    private def hr
+      "#{"-" * HR_WIDTH}\n"
     end
 
-    private def footprint(gem = @gem)
-      deps = gem.deps.reduce(gem.deps.clone) do |acc, dep|
-        acc << footprint(dep)
-      end
-      deps.flatten!
-      deps.uniq!(&:name)
-      deps
+    private def deps_groups
+      return [@runtime_deps, @development_deps] if @runtime_deps && @development_deps 
+      @runtime_deps, @development_deps = @gem.deps.partition { |dep| dep.env == Env::RUNTIME }
     end
   end
 end

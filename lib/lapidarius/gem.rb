@@ -4,6 +4,9 @@ module Lapidarius
   class Gem
     class KindError < ArgumentError; end
 
+    STACK_DEPTH = 25
+    ONE_LEVEL_DEPTH = 5
+
     def self.factory(name)
       name.match(/Gem ([a-z0-9\-_]+)-(\d{1,2}\.\d{1,3}\.\d{1,2})/) do |m|
         return new(name: m[1], version: m[2])
@@ -37,8 +40,19 @@ module Lapidarius
       gem.name == name && gem.version == version && gem.env == env
     end
 
-    def to_s
-      "#{name} (#{version})"
+    def to_s(recursive: false)
+      fullname.tap do |s|
+        break s unless recursive
+        deps.each do |dep|
+          s << "\n"
+          s << indentation(caller.size)
+          s << dep.to_s(recursive: true)
+        end
+      end
+    end
+
+    def fullname
+      "#{name} (#{version}, #{env})"
     end
 
     def runtime?
@@ -47,6 +61,12 @@ module Lapidarius
 
     def development?
       @env == Env::DEVELOPMENT
+    end
+
+    private def indentation(depth = STACK_DEPTH)
+      factor = (depth - STACK_DEPTH) / ONE_LEVEL_DEPTH
+      factor += 1 if factor.odd?
+      " " * factor.abs
     end
 
     private def gem?(gem)
