@@ -5,8 +5,9 @@
     * [gem dep](#gem-dep)
     * [bundle viz](#bundle-viz)
 * [Usage](#usage)
-  * [First level dependencies](#first-level-dependencies)
+  * [Unique dependencies](#unique-dependencies)
   * [Recursive print](#recursive-print)
+  * [Warning](#warning)
 
 ## Scope
 This gem is aimed to list recursively the **runtime dependencies** footprint of the specified gem.
@@ -24,19 +25,7 @@ While it is great to visualize inter-dependencies, i have hard times figuring ou
 ## Usage
 The library relies on the *Gem::Commands::DependencyCommand* class (the one invoked by the *gem dep* command line), invoking it recursively to deeply fetch dependencies.
 
-### First level dependencies
-Just specify the name of the gem you want to scan:
-```
-$ ./bin/lapidarius --gem=sinatra
-
-sinatra (1.4.7)         3
--------------------------
-rack (~> 1.5)
-rack-protection (~> 1.4)
-tilt (< 3, >= 1.3)
-
-```
-
+### Unique dependencies
 The command outcome includes all of the unique (by name) nested runtime dependencies:
 ```
 $ ./bin/lapidarius --gem=grape
@@ -67,7 +56,7 @@ ice_nine (~> 0.11.0)
 ```
 
 ### Recursive print
-To print dependencies hierarchy recursively, provide the *--recursive* flag:
+To print dependencies hierarchy recursively, provide the *--recursive* flag. Duplicates are not counted:  
 ```
 $ ./bin/lapidarius --gem=sinatra --recursive
 
@@ -80,4 +69,5 @@ tilt (< 3, >= 1.3)
 
 ```
 
+### Warning
 Consider only the gems installed on your system are scanned for their own dependencies, no remote fetching is performed.
