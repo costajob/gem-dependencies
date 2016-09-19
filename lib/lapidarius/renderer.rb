@@ -20,7 +20,7 @@ module Lapidarius
     end
 
     private def header
-      @out << ("\n#{@gem.fullname}".ljust(23) << "#{@gem.count_nested_deps}".rjust(3))
+      @out << ("\n#{@gem.fullname}".ljust(23) << "#{@gem.deep_count}".rjust(3))
       @out << hr
     end
 

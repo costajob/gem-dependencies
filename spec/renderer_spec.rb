@@ -17,6 +17,6 @@ describe Lapidarius::Renderer do
   it "must render output recursively" do
     renderer = Lapidarius::Renderer.new(gem: sinatra, recursive: true)
     renderer.call(io)
-    io.string.must_equal "\nsinatra (1.4.7)         3\n-------------------------\nrack (~> 1.5)\nrack-protection (~> 1.4)\n  rack (>= 0)\ntilt (< 3, >= 1.3)\n\n"
+    io.string.must_equal "\nsinatra (1.4.7)         3\n-------------------------\nrack (~> 1.5)\nrack-protection (~> 1.4)\n      rack (>= 0)\ntilt (< 3, >= 1.3)\n\n"
   end
 end

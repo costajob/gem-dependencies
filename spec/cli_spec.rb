@@ -14,7 +14,7 @@ describe Lapidarius::CLI do
 
   it "must print runtime dependencies recursively" do
     Lapidarius::CLI.new(%w[--gem=sinatra --recursive], io).call(Mocks::Command)
-    io.string.must_equal "\nsinatra (1.4.7)         3\n-------------------------\nrack (~> 1.5)\nrack-protection (~> 1.4)\n  rack (>= 0)\ntilt (< 3, >= 1.3)\n\n"
+    io.string.must_equal "\nsinatra (1.4.7)         3\n-------------------------\nrack (~> 1.5)\nrack-protection (~> 1.4)\n      rack (>= 0)\ntilt (< 3, >= 1.3)\n\n"
   end
 
   it "must print the help" do

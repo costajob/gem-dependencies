@@ -2,8 +2,7 @@ module Lapidarius
   class Gem
     class KindError < ArgumentError; end
 
-    STACK_DEPTH = 25
-    ONE_LEVEL_DEPTH = 5
+    LEVEL_DEPTH = 5
 
     def self.factory(name)
       name.match(/Gem ([a-z0-9\-_]+)-(\d{1,2}\.\d{1,3}\.\d{1,2})/) do |m|
@@ -33,12 +32,12 @@ module Lapidarius
     end
 
     def to_s(recursive: false)
+      return fullname unless recursive
       fullname.tap do |s|
-        break s unless recursive
         deps.each do |dep|
           s << "\n"
-          s << indentation(caller.size)
-          s << dep.to_s(recursive: true)
+          s << indentation
+          s << dep.to_s(recursive: recursive)
         end
       end
     end
@@ -47,23 +46,21 @@ module Lapidarius
       "#{name} (#{version})"
     end
 
-    def count_nested_deps
+    def deep_count
       flatten_deps.size
     end
 
     protected def flatten_deps
-      all = deps.reduce(deps.clone) do |acc, dep|
+      deps.reduce(deps) do |acc, dep|
         acc.concat dep.flatten_deps
+      end.tap do |deps|
+        deps.flatten!
+        deps.uniq!(&:name)
       end
-      all.flatten!
-      all.uniq!(&:name)
-      all
     end
 
-    private def indentation(depth = STACK_DEPTH)
-      factor = (depth - STACK_DEPTH) / ONE_LEVEL_DEPTH
-      factor += 1 if factor.odd?
-      " " * factor.abs
+    private def indentation
+      " " * (caller.size / LEVEL_DEPTH)
     end
 
     private def gem?(gem)

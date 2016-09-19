@@ -29,7 +29,7 @@ describe Lapidarius::Gem do
   end
 
   it "must count nested dependencies" do
-    sinatra.count_nested_deps.must_equal 4
+    sinatra.deep_count.must_equal 4
   end
 
   it "must prevent adding a wrong dependency" do
@@ -41,6 +41,6 @@ describe Lapidarius::Gem do
   end
 
   it "must print dependencies recursively on multiple lines" do
-    sinatra.to_s(recursive: true).must_equal "sinatra (1.4.7)\ntilt (< 3, >= 1.3)\nrack (~> 1.5)\n  minitest (~> 5.4)\nrack-protection (~> 1.4)"
+    sinatra.to_s(recursive: true).must_equal "sinatra (1.4.7)\n     tilt (< 3, >= 1.3)\n     rack (~> 1.5)\n      minitest (~> 5.4)\n     rack-protection (~> 1.4)"
   end
 end
