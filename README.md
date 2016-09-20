@@ -30,8 +30,8 @@ The command outcome includes all of the unique (by name) nested runtime dependen
 ```
 $ ./bin/lapidarius --gem=grape
 
-grape (0.17.0)         20
--------------------------
+grape (0.17.0)              20
+------------------------------
 activesupport (>= 0)
 builder (>= 0)
 hashie (>= 2.1.0)
@@ -60,8 +60,8 @@ To print dependencies hierarchy recursively, provide the *--recursive* flag. Dup
 ```
 $ ./bin/lapidarius --gem=sinatra --recursive
 
-sinatra (1.4.7)         3
--------------------------
+sinatra (1.4.7)              3
+------------------------------
 rack (~> 1.5)
 rack-protection (~> 1.4)
   rack (>= 0)

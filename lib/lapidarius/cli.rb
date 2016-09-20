@@ -9,6 +9,8 @@ module Lapidarius
     def initialize(args, io = STDOUT)
       @args = args
       @io = io
+      @gem = nil
+      @recursive = nil
     end
 
     def call(cmd_klass = Command)

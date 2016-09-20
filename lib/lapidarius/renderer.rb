@@ -20,7 +20,7 @@ module Lapidarius
     end
 
     private def header
-      @out << ("\n#{@gem.fullname}".ljust(23) << "#{@gem.deep_count}".rjust(3))
+      @out << ("\n#{@gem.fullname}".ljust(28) << "#{@gem.deep_count}".rjust(3))
       @out << hr
     end
 
@@ -33,7 +33,7 @@ module Lapidarius
     end
 
     private def hr
-      "#{"-" * 25}\n"
+      "#{"-" * 30}\n"
     end
   end
 end
