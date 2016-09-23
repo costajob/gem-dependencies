@@ -10,4 +10,9 @@ describe Lapidarius::Cutter do
       dep.must_be_instance_of Lapidarius::Gem
     end
   end
+
+  it "must raise an error if unable to create the gem" do
+    cutter = Lapidarius::Cutter.new(gem: "raise_error", cmd_klass: Mocks::Command)
+    -> { cutter.call }.must_raise Lapidarius::Cutter::GemNotCreatedError
+  end
 end

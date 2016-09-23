@@ -5,7 +5,7 @@ module Lapidarius
     LEVEL_DEPTH = 5
 
     def self.factory(name)
-      name.match(/Gem ([a-z0-9\-_]+)-(\d{1,2}\.\d{1,3}\.\d{1,2})/) do |m|
+      name.match(/Gem ([a-z0-9\-_]+)-(.+)/) do |m|
         return new(name: m[1], version: m[2])
       end
       name.match(/([a-z0-9\-_]+) \(([0-9~<>=, \.]+)\)/) do |m|

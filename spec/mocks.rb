@@ -10,13 +10,15 @@ module Mocks
     when "tilt"
       "Gem tilt-2.0.5\n\n"
     when "lapidarius"
-      "Gem lapidarius 1.01\n  rr (~> 1.5)\n\n"
+      "Gem lapidarius-1.0\n  rr (~> 1.5)\n\n"
     when "rake"
       "Gem rake-10.4.2\n  hoe (~> 3.13, development)\n  minitest (~> 5.4, development)\n  rdoc (~> 4.0, development)\n\n"
     when "minitest"
       "Gem minitest-5.8.3\n  hoe (~> 3.14, development)\n  rdoc (~> 4.0, development)\n\n  Gem minitest-5.9.0\n  hoe (~> 3.15, development)\n  rdoc (~> 4.0, development)\n\n"
     when "rdoc"
       "Gem rdoc-4.2.1\n\n"
+    when "raise_error"
+      "Jem and the holograms"
     else
       "No gems found matching #{gem} (>= 0)"
     end

@@ -5,6 +5,8 @@ module Lapidarius
   class Cutter
     DEVELOPMENT = "development"
 
+    class GemNotCreatedError < StandardError; end
+
     def initialize(gem:, cmd_klass: Command)
       @gem = gem
       @cmd = cmd_klass.new
@@ -14,6 +16,7 @@ module Lapidarius
       tokens = tokenize(src)
       token = tokens.shift
       gem ||= Gem.factory(token)
+      fail GemNotCreatedError, "unable to create a gem from #{token}" unless gem
       tokens.each do |t|
         dep = Gem.factory(t)
         next unless dep
