@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/costajob/lapidarius"
 
   s.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  s.bindir = "exe"
+  s.bindir = "bin"
   s.executables << "lapidarius"
   s.require_paths = ["lib"]
 
