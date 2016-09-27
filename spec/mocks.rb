@@ -17,6 +17,8 @@ module Mocks
       "Gem minitest-5.8.3\n  hoe (~> 3.14, development)\n  rdoc (~> 4.0, development)\n\n  Gem minitest-5.9.0\n  hoe (~> 3.15, development)\n  rdoc (~> 4.0, development)\n\n"
     when "rdoc"
       "Gem rdoc-4.2.1\n\n"
+    when "RubyInline"
+      "Gem RubyInline-3.12.4\n  ZenTest (~> 4.3)\n  hoe (~> 3.13, development)\n  minitest (~> 5.6, development)\n  rdoc (~> 4.0, development)\n\n"
     when "raise_error"
       "Jem and the holograms"
     else

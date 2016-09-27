@@ -9,10 +9,10 @@ module Lapidarius
       token.match(/^No gems found matching/) do |m|
         fail NotInstalledError, "no version of specified gem is installed!"
       end
-      token.match(/Gem ([a-z0-9\-_]+)-(.+)/) do |m|
+      token.match(/Gem ([a-zA-Z0-9\-_]+)-(.+)/) do |m|
         return new(name: m[1], version: m[2])
       end
-      token.match(/([a-z0-9\-_]+) \(([0-9~<>=, \.]+)\)/) do |m|
+      token.match(/([a-zA-Z0-9\-_]+) \(([0-9~<>=, \.]+)\)/) do |m|
         return new(name: m[1], version: m[2])
       end
     end
