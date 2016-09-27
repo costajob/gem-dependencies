@@ -5,8 +5,6 @@ require "lapidarius/renderer"
 
 module Lapidarius
   class CLI
-    class NoGemError < ArgumentError; end
-
     def initialize(args, io = STDOUT)
       @args = args
       @io = io
@@ -16,7 +14,7 @@ module Lapidarius
 
     def call(cmd_klass = Command)
       parser.parse!(@args)
-      fail NoGemError, "please specify the name of a gem: '-g gem_name'" unless @gem
+      return @io.puts("specify gem name as: '-g gem_name'") unless @gem
       gem = cutter(cmd_klass).call
       renderer(gem).call(@io)
     rescue Gem::NotInstalledError => e

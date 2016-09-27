@@ -3,8 +3,9 @@ require "spec_helper"
 describe Lapidarius::CLI do
   let(:io) { StringIO.new }
 
-  it "must raise an error if no gem is specified" do
-    -> { Lapidarius::CLI.new([]).call }.must_raise Lapidarius::CLI::NoGemError
+  it "must warn if no gem is specified" do
+    Lapidarius::CLI.new(%w[sinatra], io).call
+    io.string.must_equal "specify gem name as: '-g gem_name'\n"
   end
 
   it "must print runtime dependencies" do
