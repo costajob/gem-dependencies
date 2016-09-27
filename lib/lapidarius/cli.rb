@@ -1,4 +1,5 @@
 require "optparse"
+require "lapidarius/version"
 require "lapidarius/cutter"
 require "lapidarius/renderer"
 
@@ -15,9 +16,11 @@ module Lapidarius
 
     def call(cmd_klass = Command)
       parser.parse!(@args)
-      fail NoGemError, "please specify the name of an installed gem!" unless @gem
+      fail NoGemError, "please specify the name of a gem: '-g gem_name'" unless @gem
       gem = cutter(cmd_klass).call
       renderer(gem).call(@io)
+    rescue Gem::NotInstalledError => e
+      @io.puts e.message.sub("specified", @gem)
     end
 
     private def parser
@@ -32,6 +35,11 @@ module Lapidarius
           @recursive = recursive
         end
 
+        opts.on("-v", "--version", "Print library version") do
+          @io.puts VERSION
+          exit
+        end
+        
         opts.on("-h", "--help", "Prints this help") do
           @io.puts opts
           exit

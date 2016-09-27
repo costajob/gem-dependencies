@@ -1,14 +1,18 @@
 module Lapidarius
   class Gem
     class KindError < ArgumentError; end
+    class NotInstalledError < ArgumentError; end
 
     LEVEL_DEPTH = 5
 
-    def self.factory(name)
-      name.match(/Gem ([a-z0-9\-_]+)-(.+)/) do |m|
+    def self.factory(token)
+      token.match(/^No gems found matching/) do |m|
+        fail NotInstalledError, "no version of specified gem is installed!"
+      end
+      token.match(/Gem ([a-z0-9\-_]+)-(.+)/) do |m|
         return new(name: m[1], version: m[2])
       end
-      name.match(/([a-z0-9\-_]+) \(([0-9~<>=, \.]+)\)/) do |m|
+      token.match(/([a-z0-9\-_]+) \(([0-9~<>=, \.]+)\)/) do |m|
         return new(name: m[1], version: m[2])
       end
     end

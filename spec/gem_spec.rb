@@ -14,7 +14,14 @@ describe Lapidarius::Gem do
     Lapidarius::Gem.factory("Gem lapidarius-1.0").must_equal Lapidarius::Gem.new(name: "lapidarius", version: "1.0")
     Lapidarius::Gem.factory("multi_json (>= 1.3.2)").must_equal Lapidarius::Gem.new(name: "multi_json", version: ">= 1.3.2")
     Lapidarius::Gem.factory("tilt (< 3, >= 1.3)").must_equal Lapidarius::Gem.new(name: "tilt", version: "< 3, >= 1.3")
-    Lapidarius::Gem.factory("rake (= 10.4.2, development)").must_equal nil
+  end
+
+  it "must filter development gems" do
+    Lapidarius::Gem.factory("rake (= 10.4.2, development)").must_be_nil
+  end
+
+  it "must raise an error when gem is missing" do
+    -> { Lapidarius::Gem.factory("No gems found matching noent (>= 0)") }.must_raise Lapidarius::Gem::NotInstalledError
   end
 
   it "must initailize gem" do
