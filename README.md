@@ -5,9 +5,10 @@
     * [gem dep](#gem-dep)
     * [bundle viz](#bundle-viz)
 * [Usage](#usage)
+  * [Warning](#warning)
   * [Unique dependencies](#unique-dependencies)
   * [Recursive print](#recursive-print)
-  * [Warning](#warning)
+  * [Filter by version](#filter-by-version)
 
 ## Scope
 This gem is aimed to list recursively the **runtime dependencies** footprint of the specified gem.
@@ -25,10 +26,13 @@ While it is great to visualize inter-dependencies, i have hard times figuring ou
 ## Usage
 The library relies on the *Gem::Commands::DependencyCommand* class (the one invoked by the *gem dep* command line), invoking it recursively to deeply fetch dependencies.
 
+### Warning
+Consider only the gems installed on your system are scanned for their own dependencies, no remote fetching is performed.
+
 ### Unique dependencies
 The command outcome includes all of the unique (by name) nested runtime dependencies:
 ```
-$ ./bin/lapidarius --gem=grape
+$ lapidarius --gem=grape
 
 grape (0.17.0)              20
 ------------------------------
@@ -58,7 +62,7 @@ ice_nine (~> 0.11.0)
 ### Recursive print
 To print dependencies hierarchy recursively, provide the *--recursive* flag. Duplicates are not counted:  
 ```
-$ ./bin/lapidarius --gem=sinatra --recursive
+$ lapidarius --gem=sinatra --recursive
 
 sinatra (1.4.7)              3
 ------------------------------
@@ -69,5 +73,13 @@ tilt (< 3, >= 1.3)
 
 ```
 
-### Warning
-Consider only the gems installed on your system are scanned for their own dependencies, no remote fetching is performed.
+### Filter by version
+If you have multiple versions of the same gem installed, the library will fetch the first one listed by default.
+To specify the version of the gem to be scanned provide the *--version* flag:
+```
+$ lapidarius --gem=rack --version=2.0.1
+
+rack (2.0.1)                 0
+------------------------------
+
+```

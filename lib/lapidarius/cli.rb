@@ -1,5 +1,4 @@
 require "optparse"
-require "lapidarius/version"
 require "lapidarius/cutter"
 require "lapidarius/renderer"
 
@@ -9,6 +8,7 @@ module Lapidarius
       @args = args
       @io = io
       @gem = nil
+      @version = nil
       @recursive = nil
     end
 
@@ -29,15 +29,14 @@ module Lapidarius
           @gem = gem
         end
 
+        opts.on("-vVERSION", "--version=VERSION", "Specify the gem version") do |version|
+          @version = version
+        end
+        
         opts.on("-r", "--recursive", "Print dependencies recursively") do |recursive|
           @recursive = recursive
         end
 
-        opts.on("-v", "--version", "Print library version") do
-          @io.puts VERSION
-          exit
-        end
-        
         opts.on("-h", "--help", "Prints this help") do
           @io.puts opts
           exit
@@ -46,7 +45,7 @@ module Lapidarius
     end
 
     private def cutter(cmd_klass)
-      @cutter = Lapidarius::Cutter.new(gem: @gem, cmd_klass: cmd_klass)
+      @cutter = Lapidarius::Cutter.new(gem: @gem, version: @version, cmd_klass: cmd_klass)
     end
 
     private def renderer(gem)

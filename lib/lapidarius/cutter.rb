@@ -7,8 +7,9 @@ module Lapidarius
 
     class GemNotCreatedError < StandardError; end
 
-    def initialize(gem:, cmd_klass: Command)
+    def initialize(gem:, version: nil, cmd_klass: Command)
       @gem = gem
+      @version = version
       @cmd = cmd_klass.new
     end
 
@@ -27,11 +28,15 @@ module Lapidarius
     end
 
     private def tokenize(src)
-      src = src.split(/\n\n/).first
-      src.split("\n").tap do |tokens|
+      data = src.split(/\n\n/).map!(&:strip)
+      by_version(data).split("\n").tap do |tokens|
         tokens.map!(&:strip)
         tokens.reject! { |token| token.match(/#{DEVELOPMENT}/) }
       end
+    end
+
+    private def by_version(data)
+      data.detect { |d| d.match(/^Gem #{@gem}-#{@version}/) } || data.first
     end
 
     private def cmd(gem = @gem)

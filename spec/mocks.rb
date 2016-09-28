@@ -4,7 +4,7 @@ module Mocks
     when "sinatra"
       "Gem sinatra-1.4.7\n  rack (~> 1.5)\n  rack-protection (~> 1.4)\n  tilt (< 3, >= 1.3)\n  lapidarius (>= 0, development)\n\n"
     when "rack"
-      "Gem rack-1.6.4\n  bacon (>= 0, development)\n  rake (>= 0, development)\n\n"
+      "Gem rack-1.6.4\n  bacon (>= 0, development)\n  rake (>= 0, development)\n\n  Gem rack-2.0.1\n  concurrent-ruby (>= 0, development)\n  minitest (~> 5.0, development)\n  minitest-sprint (>= 0, development)\n  rake (>= 0, development)\n\n"
     when "rack-protection"
       "Gem rack-protection-1.5.3\n  rack (>= 0)\n  rack-test (>= 0, development)\n  rspec (~> 2.0, development)\n\n"
     when "tilt"
