@@ -8,7 +8,6 @@
   * [Warning](#warning)
   * [Unique dependencies](#unique-dependencies)
   * [Recursive print](#recursive-print)
-  * [Filter by version](#filter-by-version)
 
 ## Scope
 This gem is aimed to list recursively the **runtime dependencies** footprint of the specified gem.
@@ -70,16 +69,5 @@ rack (~> 1.5)
 rack-protection (~> 1.4)
   rack (>= 0)
 tilt (< 3, >= 1.3)
-
-```
-
-### Filter by version
-If you have multiple versions of the same gem installed, the library will fetch the first one listed by default.
-To specify the version of the gem to be scanned provide the *--version* flag:
-```
-$ lapidarius --gem=rack --version=2.0.1
-
-rack (2.0.1)                 0
-------------------------------
 
 ```

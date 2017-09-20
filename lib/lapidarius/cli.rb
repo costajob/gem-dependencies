@@ -8,15 +8,14 @@ module Lapidarius
       @args = args
       @io = io
       @gem = nil
-      @version = nil
       @recursive = nil
     end
 
     def call(cmd_klass = Command)
       parser.parse!(@args)
       return @io.puts("specify gem name as: '-g gem_name'") unless @gem
-      gem = cutter(cmd_klass).call
-      renderer(gem).call(@io)
+      obj = Lapidarius::Cutter.new(@gem, cmd_klass).call
+      Lapidarius::Renderer::new(obj, @recursive).call(@io)
     rescue Gem::NotInstalledError => e
       @io.puts e.message.sub("specified", @gem)
     end
@@ -29,10 +28,6 @@ module Lapidarius
           @gem = gem
         end
 
-        opts.on("-vVERSION", "--version=VERSION", "Specify the gem version") do |version|
-          @version = version
-        end
-        
         opts.on("-r", "--recursive", "Print dependencies recursively") do |recursive|
           @recursive = recursive
         end
@@ -42,14 +37,6 @@ module Lapidarius
           exit
         end
       end
-    end
-
-    private def cutter(cmd_klass)
-      @cutter = Lapidarius::Cutter.new(gem: @gem, version: @version, cmd_klass: cmd_klass)
-    end
-
-    private def renderer(gem)
-      Lapidarius::Renderer::new(gem: gem, recursive: @recursive)
     end
   end
 end

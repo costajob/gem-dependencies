@@ -7,14 +7,13 @@ module Lapidarius
 
     class GemNotCreatedError < StandardError; end
 
-    def initialize(gem:, version: nil, cmd_klass: Command)
-      @gem = gem
-      @version = version
+    def initialize(name, cmd_klass = Command)
+      @name = name
       @cmd = cmd_klass.new
     end
 
-    def call(src = cmd, gem = nil)
-      tokens = tokenize(src)
+    def call(name = @name, gem = nil)
+      tokens = tokenize(name)
       token = tokens.shift
       gem ||= Gem.factory(token)
       fail GemNotCreatedError, "unable to create a gem from #{token}" unless gem
@@ -22,25 +21,18 @@ module Lapidarius
         dep = Gem.factory(t)
         next unless dep
         gem << dep
-        call(cmd(dep.name), dep)
+        call(dep.name, dep)
       end
       gem
     end
 
-    private def tokenize(src)
+    private def tokenize(name)
+      src = @cmd.call(name)
       data = src.split(/\n\n/).map!(&:strip)
-      by_version(data).split("\n").tap do |tokens|
+      data.first.split("\n").tap do |tokens|
         tokens.map!(&:strip)
         tokens.reject! { |token| token.match(/#{DEVELOPMENT}/) }
       end
-    end
-
-    private def by_version(data)
-      data.detect { |d| d.match(/^Gem #{@gem}-#{@version}/) } || data.first
-    end
-
-    private def cmd(gem = @gem)
-      @cmd.call(gem)
     end
   end
 end

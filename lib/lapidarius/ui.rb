@@ -17,8 +17,5 @@ module Lapidarius
     def clear!
       @io.reopen("")
     end
-
-    def terminate_interaction(code = 0)
-    end
   end
 end
