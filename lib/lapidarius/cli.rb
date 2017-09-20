@@ -17,7 +17,7 @@ module Lapidarius
       obj = Lapidarius::Cutter.new(@gem, cmd_klass).call
       Lapidarius::Renderer::new(obj, @recursive).call(@io)
     rescue Gem::NotInstalledError => e
-      @io.puts e.message.sub("specified", @gem)
+      @io.puts e.message.sub("specified", "\e[1m#{@gem}\e[0m")
     end
 
     private def parser

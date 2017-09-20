@@ -17,5 +17,8 @@ module Lapidarius
     def clear!
       @io.reopen("")
     end
+ 
+    # mock method invocked by Gem::UserInteraction module
+    def terminate_interaction(code = 0); end
   end
 end
