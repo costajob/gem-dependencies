@@ -20,7 +20,7 @@ describe Lapidarius::CLI do
 
   it "must warn about missing gems" do
     Lapidarius::CLI.new(%w[--gem=noent], io).call(Mocks::Command)
-    io.string.must_equal "no version of \e[1mnoent\e[0m gem is installed!\n"
+    io.string.must_equal "no version of \e[1mnoent\e[0m gem installed\n"
   end
 
   it "must print the help" do
