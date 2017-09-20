@@ -33,29 +33,24 @@ The command outcome includes all of the unique (by name) nested runtime dependen
 ```
 $ lapidarius --gem=grape
 
-grape (0.17.0)              20
+grape (1.0.1)               16
 ------------------------------
 activesupport (>= 0)
 builder (>= 0)
-hashie (>= 2.1.0)
-multi_json (>= 1.3.2)
-multi_xml (>= 0.5.2)
-mustermann19 (~> 0.4.3)
+mustermann-grape (~> 1.0.0)
 rack (>= 1.3.0)
 rack-accept (>= 0)
 virtus (>= 1.0.0)
-concurrent-ruby (>= 1.0.2, ~> 1.0)
 i18n (~> 0.7)
 minitest (~> 5.1)
+thread_safe (>= 0.3.4, ~> 0.3)
 tzinfo (~> 1.1)
-thread_safe (~> 0.1)
-enumerable-lazy (>= 0)
+mustermann (~> 1.0.0)
 axiom-types (~> 0.1)
 coercible (~> 1.0)
 descendants_tracker (>= 0.0.3, ~> 0.0)
 equalizer (>= 0.0.9, ~> 0.0)
 ice_nine (~> 0.11.0)
-
 ```
 
 ### Recursive print
