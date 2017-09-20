@@ -20,7 +20,7 @@ module Lapidarius
     end
 
     private def collect_header
-      @out << ("\n#{@gem.fullname}".ljust(28) << "#{@gem.deep_count}".rjust(3))
+      @out << ("\n#{@gem.fullname}".ljust(29) << "\e[1m#{@gem.deep_count}\e[0m".rjust(3))
       @out << hr
     end
 
