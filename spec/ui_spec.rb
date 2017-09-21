@@ -1,4 +1,4 @@
-require "spec_helper"
+require "helper"
 
 describe Lapidarius::UI do
   let(:ui) { Lapidarius::UI.new }
@@ -8,7 +8,6 @@ describe Lapidarius::UI do
     ui.say verse
     ui.out.must_equal verse
   end
-
 
   it "must clear output" do
     ui.say verse

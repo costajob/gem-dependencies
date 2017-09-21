@@ -6,8 +6,7 @@
     * [bundle viz](#bundle-viz)
 * [Usage](#usage)
   * [Warning](#warning)
-  * [Unique dependencies](#unique-dependencies)
-  * [Recursive print](#recursive-print)
+  * [Output](#output)
 
 ## Scope
 This gem is aimed to list recursively the **runtime dependencies** footprint of the specified gem.
@@ -28,41 +27,56 @@ The library relies on the *Gem::Commands::DependencyCommand* class (the one invo
 ### Warning
 Consider only the gems installed on your system are scanned for their own dependencies, no remote fetching is performed.
 
-### Unique dependencies
-The command outcome includes all of the unique (by name) nested runtime dependencies:
+### Output
+The output of the library mimics the `tree` utility to list file system nested entries.  
+Although all of the nested runtime dependencies are included in the output, just the unique ones are counted:
 ```
 $ lapidarius --gem=grape
-
-grape (1.0.1)               16
-------------------------------
-activesupport (>= 0)
-builder (>= 0)
-mustermann-grape (~> 1.0.0)
-rack (>= 1.3.0)
-rack-accept (>= 0)
-virtus (>= 1.0.0)
-i18n (~> 0.7)
-minitest (~> 5.1)
-thread_safe (>= 0.3.4, ~> 0.3)
-tzinfo (~> 1.1)
-mustermann (~> 1.0.0)
-axiom-types (~> 0.1)
-coercible (~> 1.0)
-descendants_tracker (>= 0.0.3, ~> 0.0)
-equalizer (>= 0.0.9, ~> 0.0)
-ice_nine (~> 0.11.0)
-```
-
-### Recursive print
-To print dependencies hierarchy recursively, provide the *--recursive* flag. Duplicates are not counted:  
-```
-$ lapidarius --gem=sinatra --recursive
-
-sinatra (1.4.7)              3
-------------------------------
-rack (~> 1.5)
-rack-protection (~> 1.4)
-  rack (>= 0)
-tilt (< 3, >= 1.3)
-
+grape (1.0.1) - 16
+├── activesupport (>= 0)
+│   ├── i18n (~> 0.7)
+│   ├── minitest (~> 5.1)
+│   ├── thread_safe (>= 0.3.4, ~> 0.3)
+│   └── tzinfo (~> 1.1)
+│       └── thread_safe (~> 0.1)
+├── builder (>= 0)
+├── mustermann-grape (~> 1.0.0)
+│   └── mustermann (~> 1.0.0)
+├── rack (>= 1.3.0)
+├── rack-accept (>= 0)
+│   └── rack (>= 0.4)
+├── virtus (>= 1.0.0)
+│   ├── axiom-types (~> 0.1)
+│   │   ├── descendants_tracker (~> 0.0.4)
+│   │   │   └── thread_safe (>= 0.3.1, ~> 0.3)
+│   │   ├── ice_nine (~> 0.11.0)
+│   │   └── thread_safe (>= 0.3.1, ~> 0.3)
+│   ├── coercible (~> 1.0)
+│   │   ├── descendants_tracker (~> 0.0.1)
+│   │   │   └── thread_safe (>= 0.3.1, ~> 0.3)
+│   │   └── thread_safe (>= 0.3.1, ~> 0.3)
+│   ├── descendants_tracker (>= 0.0.3, ~> 0.0)
+│   │   └── thread_safe (>= 0.3.1, ~> 0.3)
+│   ├── equalizer (>= 0.0.9, ~> 0.0)
+│   ├── ice_nine (~> 0.11.0)
+│   └── thread_safe (>= 0.3.1, ~> 0.3)
+├── i18n (~> 0.7)
+├── minitest (~> 5.1)
+├── thread_safe (>= 0.3.4, ~> 0.3)
+├── tzinfo (~> 1.1)
+│   └── thread_safe (~> 0.1)
+├── mustermann (~> 1.0.0)
+├── axiom-types (~> 0.1)
+│   ├── descendants_tracker (~> 0.0.4)
+│   │   └── thread_safe (>= 0.3.1, ~> 0.3)
+│   ├── ice_nine (~> 0.11.0)
+│   └── thread_safe (>= 0.3.1, ~> 0.3)
+├── coercible (~> 1.0)
+│   ├── descendants_tracker (~> 0.0.1)
+│   │   └── thread_safe (>= 0.3.1, ~> 0.3)
+│   └── thread_safe (>= 0.3.1, ~> 0.3)
+├── descendants_tracker (>= 0.0.3, ~> 0.0)
+│   └── thread_safe (>= 0.3.1, ~> 0.3)
+├── equalizer (>= 0.0.9, ~> 0.0)
+└── ice_nine (~> 0.11.0)
 ```

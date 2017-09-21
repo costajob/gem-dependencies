@@ -1,9 +1,14 @@
+require "forwardable"
+require "lapidarius/tree"
+
 module Lapidarius
   class Gem
+    extend Forwardable
+
+    def_delegators :@deps, :size, :each_with_index
+
     class KindError < ArgumentError; end
     class NotInstalledError < ArgumentError; end
-
-    LEVEL_DEPTH = 5
 
     def self.factory(token)
       token.match(/^No gems found matching/) do |m|
@@ -35,23 +40,12 @@ module Lapidarius
       gem.name == name && gem.version == version
     end
 
-    def to_s(recursive: false)
-      return fullname unless recursive
-      fullname.tap do |s|
-        deps.each do |dep|
-          s << "\n"
-          s << indentation
-          s << dep.to_s(recursive: recursive)
-        end
-      end
-    end
-
-    def fullname
+    def to_s
       "#{name} (#{version})"
     end
 
-    def deep_count
-      flatten_deps.size
+    def header
+      "#{self} - \e[1;33m#{deep_count}\e[0m"
     end
 
     protected def flatten_deps
@@ -63,8 +57,8 @@ module Lapidarius
       end
     end
 
-    private def indentation
-      " " * (caller.size / LEVEL_DEPTH)
+    private def deep_count
+      flatten_deps.size
     end
 
     private def gem?(gem)

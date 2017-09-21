@@ -1,8 +1,8 @@
-require "spec_helper"
+require "helper"
 
 describe Lapidarius::Cutter do
   it "must cut gem with runtime dependencies" do
-    cutter = Lapidarius::Cutter.new("sinatra", Mocks::Command)
+    cutter = Lapidarius::Cutter.new("sinatra", Stubs::Command)
     gem = cutter.call
     gem.must_be_instance_of Lapidarius::Gem
     gem.deps.size.must_equal 3
@@ -12,7 +12,7 @@ describe Lapidarius::Cutter do
   end
 
   it "must raise an error if unable to create the gem" do
-    cutter = Lapidarius::Cutter.new("raise_error", Mocks::Command)
+    cutter = Lapidarius::Cutter.new("raise_error", Stubs::Command)
     -> { cutter.call }.must_raise Lapidarius::Cutter::GemNotCreatedError
   end
 end

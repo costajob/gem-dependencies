@@ -1,4 +1,4 @@
-module Mocks
+module Stubs
   def self.data(gem)
     case gem
     when "sinatra"
@@ -30,14 +30,38 @@ module Mocks
     attr_accessor :ui
 
     def invoke(gem)
-      data = Mocks.data(gem)
+      data = Stubs.data(gem)
       ui.say(data)
     end
   end
 
   class Command
     def call(gem)
-      Mocks.data(gem)
+      Stubs.data(gem)
+    end
+  end
+
+  module Gems
+    extend self
+
+    def minitest
+      Lapidarius::Gem.new(name: "minitest", version: "~> 5.4")
+    end
+
+    def rack
+      Lapidarius::Gem.new(name: "rack", version: "~> 1.5", deps: [minitest])
+    end
+
+    def rack_protection
+      Lapidarius::Gem.new(name: "rack-protection", version: "~> 1.4")
+    end
+
+    def tilt
+      Lapidarius::Gem.new(name: "tilt", version: "< 3, >= 1.3")
+    end
+
+    def sinatra
+      Lapidarius::Gem.new(name: "sinatra", version: "1.4.7", deps: [tilt, rack, rack_protection])
     end
   end
 end

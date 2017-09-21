@@ -1,4 +1,4 @@
-require "spec_helper"
+require "helper"
 
 describe Lapidarius::CLI do
   let(:io) { StringIO.new }
@@ -9,17 +9,12 @@ describe Lapidarius::CLI do
   end
 
   it "must print runtime dependencies" do
-    Lapidarius::CLI.new(%w[--gem=sinatra], io).call(Mocks::Command)
-    io.string.must_equal "\nsinatra (1.4.7)             \e[1m3\e[0m\n------------------------------\nrack (~> 1.5)\nrack-protection (~> 1.4)\ntilt (< 3, >= 1.3)\n\n"
-  end
-
-  it "must print runtime dependencies recursively" do
-    Lapidarius::CLI.new(%w[--gem=sinatra --recursive], io).call(Mocks::Command)
-    io.string.must_equal "\nsinatra (1.4.7)             \e[1m3\e[0m\n------------------------------\nrack (~> 1.5)\nrack-protection (~> 1.4)\n      rack (>= 0)\ntilt (< 3, >= 1.3)\n\n"
+    Lapidarius::CLI.new(%w[--gem=sinatra], io).call(Stubs::Command)
+    io.string.must_equal "sinatra (1.4.7) - \e[1;33m3\e[0m\n├── rack (~> 1.5)\n├── rack-protection (~> 1.4)\n│   └── rack (>= 0)\n└── tilt (< 3, >= 1.3)\n"
   end
 
   it "must warn about missing gems" do
-    Lapidarius::CLI.new(%w[--gem=noent], io).call(Mocks::Command)
+    Lapidarius::CLI.new(%w[--gem=noent], io).call(Stubs::Command)
     io.string.must_equal "no version of \e[1mnoent\e[0m gem installed\n"
   end
 
@@ -27,7 +22,7 @@ describe Lapidarius::CLI do
     begin
       Lapidarius::CLI.new(%w[--help], io).call
     rescue SystemExit
-      io.string.must_equal "Usage: ./bin/lapidarius --gem=sinatra --recursive\n    -g, --gem=GEM                    The gem name to scan\n    -r, --recursive                  Print dependencies recursively\n    -h, --help                       Prints this help\n"
+      io.string.must_equal "Usage: ./bin/lapidarius --gem=sinatra\n    -g, --gem=GEM                    The gem name to scan\n    -h, --help                       Prints this help\n"
     end
   end
 end
