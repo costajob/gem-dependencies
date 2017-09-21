@@ -1,5 +1,3 @@
-require "ostruct"
-
 module Lapidarius
   class Tree
     CURVED = "└── "
