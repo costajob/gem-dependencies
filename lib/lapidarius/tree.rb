@@ -15,8 +15,10 @@ module Lapidarius
     def out
       return @out unless @out.empty?
       @out.tap do |out|
-        out << @gem.header
+        out << @gem
         recurse
+        out << ""
+        out << "#{@gem.count} runtime dependencies"
       end
     end
 

@@ -44,8 +44,8 @@ module Lapidarius
       "#{name} (#{version})"
     end
 
-    def header
-      "#{self} - \e[1;33m#{deep_count}\e[0m"
+    def count
+      flatten_deps.size
     end
 
     protected def flatten_deps
@@ -55,10 +55,6 @@ module Lapidarius
         deps.flatten!
         deps.uniq!(&:name)
       end
-    end
-
-    private def deep_count
-      flatten_deps.size
     end
 
     private def gem?(gem)

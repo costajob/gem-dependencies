@@ -10,7 +10,7 @@ describe Lapidarius::CLI do
 
   it "must print runtime dependencies" do
     Lapidarius::CLI.new(%w[--gem=sinatra], io).call(Stubs::Command)
-    io.string.must_equal "sinatra (1.4.7) - \e[1;33m3\e[0m\n├── rack (~> 1.5)\n├── rack-protection (~> 1.4)\n│   └── rack (>= 0)\n└── tilt (< 3, >= 1.3)\n"
+    io.string.must_equal "sinatra (1.4.7)\n├── rack (~> 1.5)\n├── rack-protection (~> 1.4)\n│   └── rack (>= 0)\n└── tilt (< 3, >= 1.3)\n\n3 runtime dependencies\n"
   end
 
   it "must warn about missing gems" do

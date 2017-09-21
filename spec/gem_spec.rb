@@ -42,8 +42,8 @@ describe Lapidarius::Gem do
     sinatra.to_s.must_equal "sinatra (1.4.7)"
   end
 
-  it "must respond to header" do
-    sinatra.header.must_equal "sinatra (1.4.7) - \e[1;33m4\e[0m"
+  it "must count flat dependencies" do
+    sinatra.count.must_equal 4
   end
 
   it "must prevent adding a wrong dependency" do
