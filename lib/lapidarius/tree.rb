@@ -16,7 +16,7 @@ module Lapidarius
         out << @gem
         recurse
         out << ""
-        out << "#{@gem.count} runtime dependencies"
+        out << "#{@gem.count} runtime, #{@gem.dev_count} development"
       end
     end
 

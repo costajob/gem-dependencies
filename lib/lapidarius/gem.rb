@@ -23,6 +23,7 @@ module Lapidarius
     end
 
     attr_reader :name, :version, :deps
+    attr_accessor :dev_count
 
     def initialize(name:, version:, deps: [])
       @name = name

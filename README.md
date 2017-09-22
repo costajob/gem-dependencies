@@ -27,9 +27,10 @@ No remote fetching is performed.
 
 ## Usage
 This library invokes the `Gem::Commands::DependencyCommand` class recursively to collect all the levels of dependency.  
-Identical dependencies are counted just once:
+Both runtime and development dependencies are counted (identical dependencies are counted once).  
+Just the runtime dependencies tree is printed to screen:
 
-```
+```shell
 $ lapidarius --gem=sinatra
 sinatra (2.0.0)
 ├── mustermann (~> 1.0)
@@ -38,5 +39,5 @@ sinatra (2.0.0)
 │   └── rack (>= 0)
 └── tilt (~> 2.0)
 
-4 runtime dependencies
+4 runtime, 4 development
 ```

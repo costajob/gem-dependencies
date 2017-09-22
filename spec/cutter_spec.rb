@@ -11,8 +11,14 @@ describe Lapidarius::Cutter do
     end
   end
 
-  it "must raise an error if unable to create the gem" do
+  it "must compute development dependencies count" do
+    cutter = Lapidarius::Cutter.new("sinatra", Stubs::Command)
+    gem = cutter.call
+    gem.dev_count.must_equal 5
+  end
+
+  it "must return nil if gem is not created" do
     cutter = Lapidarius::Cutter.new("raise_error", Stubs::Command)
-    -> { cutter.call }.must_raise Lapidarius::Cutter::GemNotCreatedError
+    cutter.call.must_be_nil
   end
 end
