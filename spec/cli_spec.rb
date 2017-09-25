@@ -22,7 +22,7 @@ describe Lapidarius::CLI do
     begin
       Lapidarius::CLI.new(%w[--help], io).call
     rescue SystemExit
-      io.string.must_equal "Usage: ./bin/lapidarius --gem=sinatra\n    -g, --gem=GEM                    The gem name to scan\n    -h, --help                       Prints this help\n"
+      io.string.must_equal "Usage: lapidarius --gem=sinatra\n    -g, --gem=GEM                    The gem name to scan\n    -h, --help                       Prints this help\n"
     end
   end
 end

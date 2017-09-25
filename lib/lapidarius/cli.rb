@@ -20,7 +20,7 @@ module Lapidarius
 
     private def parser
       OptionParser.new do |opts|
-        opts.banner = "Usage: ./bin/lapidarius --gem=sinatra"
+        opts.banner = "Usage: lapidarius --gem=sinatra"
 
         opts.on("-gGEM", "--gem=GEM", "The gem name to scan") do |gem|
           @gem = gem
