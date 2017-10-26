@@ -5,6 +5,7 @@
     * [gem dep](#gem-dep)
     * [bundle viz](#bundle-viz)
 * [Warning](#warning)
+* [Installation](#installation)
 * [Usage](#usage)
 
 ## Scope
@@ -24,6 +25,12 @@ While it is great to visualize inter-dependencies, i have hard times figuring ou
 ## Warning
 Consider only the gems installed on your system are scanned by the library.  
 No remote fetching is performed.
+
+## Installation
+Install the gem from your shell:
+```shell
+gem install lapidarius
+```
 
 ## Usage
 This library invokes the `Gem::Commands::DependencyCommand` class recursively to collect all the levels of dependency.  
