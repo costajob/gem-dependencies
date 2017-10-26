@@ -1,37 +1,44 @@
-require "optparse"
 require "lapidarius/cutter"
 
 module Lapidarius
   class CLI
-    def initialize(args, io = STDOUT)
-      @args = args
-      @io = io
-      @gem = nil
+    HELP_FLAGS = %w[-h --help]
+    COL_WIDTH = 23
+
+    def initialize(input, 
+                   pipe = STDOUT, 
+                   command = Command,
+                   cutter = Cutter,
+                   tree = Tree)
+      @input = input.to_s.strip
+      @pipe = pipe
+      @cutter = cutter.new(@input, command)
+      @tree = tree
     end
 
-    def call(cmd_klass = Command)
-      parser.parse!(@args)
-      return @io.puts("specify gem name as: '-g gem_name'") unless @gem
-      obj = Lapidarius::Cutter.new(@gem, cmd_klass).call
-      @io.puts Lapidarius::Tree::new(obj).out
+    def call
+      @pipe.puts output
+    end
+
+    private def output
+      return help if help?
+      return if @input.empty?
+      gem = @cutter.call
+      @tree::new(gem).out
     rescue Gem::NotInstalledError => e
-      @io.puts e.message.sub("specified", "\e[1m#{@gem}\e[0m")
+      e.message.sub("specified", %Q{"#{@input}"})
     end
 
-    private def parser
-      OptionParser.new do |opts|
-        opts.banner = "Usage: lapidarius --gem=sinatra"
+    private def help?
+      HELP_FLAGS.include?(@input)
+    end
 
-        opts.on("-gGEM", "--gem=GEM", "The gem name to scan") do |gem|
-          @gem = gem
-        end
-
-        opts.on("-h", "--help", "Prints this help") do
-          @io.puts opts
-          exit
-        end
+    private def help
+      [].tap do |h|
+        h << %q{Usage: lapidarius sinatra}
+        h << "    %-#{COL_WIDTH}s Print this help" % "-h --help"
+        h << "    %-#{COL_WIDTH}s Gem's name to cut" % "<gem-name>"
       end
     end
   end
 end
-

@@ -4,4 +4,5 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require "lapidarius"
 
-Lapidarius::CLI.new(ARGV.clone).call
+input = ARGV.fetch(0, "")
+Lapidarius::CLI.new(input).call

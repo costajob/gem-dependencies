@@ -38,7 +38,7 @@ Both runtime and development dependencies are counted (identical dependencies ar
 Just the runtime dependencies tree is printed to screen:
 
 ```shell
-$ lapidarius --gem=sinatra
+$ lapidarius sinatra
 sinatra (2.0.0)
 ├── mustermann (~> 1.0)
 ├── rack (~> 2.0)
