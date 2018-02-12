@@ -12,7 +12,7 @@ module Lapidarius
 
     def self.factory(token)
       token.match(/^No gems found matching/) do |m|
-        fail NotInstalledError, "no version of specified gem installed"
+        fail NotInstalledError, token
       end
       token.match(/Gem ([a-zA-Z0-9\-_]+)-(.+)/) do |m|
         return new(name: m[1], version: m[2])

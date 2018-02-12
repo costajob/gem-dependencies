@@ -8,6 +8,12 @@ describe Lapidarius::CLI do
     io.string.strip.must_be_empty
   end
 
+  it "must fetch name and version" do
+    cli = Lapidarius::CLI.new(%w[sinatra 1.4.7])
+    cli.name.must_equal "sinatra"
+    cli.version.must_equal "1.4.7"
+  end
+
   it "must print runtime dependencies" do
     Lapidarius::CLI.new("sinatra", io, Stubs::Command).call
     io.string.must_equal "sinatra (1.4.7)\n├── rack (~> 1.5)\n├── rack-protection (~> 1.4)\n│   └── rack (>= 0)\n└── tilt (< 3, >= 1.3)\n\n3 runtime, 5 development\n"
@@ -15,11 +21,11 @@ describe Lapidarius::CLI do
 
   it "must warn about missing gems" do
     Lapidarius::CLI.new("noent", io, Stubs::Command).call
-    io.string.must_equal %Q{no version of "noent" gem installed\n}
+    io.string.must_equal %Q{No gems found matching noent (>= 0)\n}
   end
 
   it "must print the help" do
     Lapidarius::CLI.new("-h", io).call
-    io.string.must_equal "Usage: lapidarius sinatra\n    -h --help               Print this help\n    <gem-name>              Gem's name to cut\n"
+    io.string.must_equal("Usage: lapidarius <name> <version>\n    -h --help               Print this help\n    <name>                  Gem's name to cut\n    <version>               Gem's version to cut\n")
   end
 end

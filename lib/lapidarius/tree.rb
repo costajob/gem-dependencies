@@ -10,7 +10,7 @@ module Lapidarius
       @out = []
     end
 
-    def out
+    def to_s
       return @out unless @out.empty?
       @out.tap do |out|
         out << @gem

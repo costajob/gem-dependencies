@@ -28,15 +28,17 @@ module Stubs
 
   class Dependency
     attr_accessor :ui
+    attr_reader :args
 
-    def invoke(gem)
-      data = Stubs.data(gem)
+    def invoke(*args)
+      @args = args
+      data = Stubs.data(@args[0])
       ui.say(data)
     end
   end
 
   class Command
-    def call(gem)
+    def call(gem, version = nil)
       Stubs.data(gem)
     end
   end

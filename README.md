@@ -7,6 +7,7 @@
 * [Warning](#warning)
 * [Installation](#installation)
 * [Usage](#usage)
+    * [Version](#version)
 
 ## Scope
 This gem is aimed to recursively collect the `runtime dependencies` footprint of the specified gem.  
@@ -23,7 +24,7 @@ The *bundle viz* command relies on the Gemfile and the [graphviz](http://www.gra
 While it is great to visualize inter-dependencies, i have hard times figuring out gem's  runtime footprint.
 
 ## Warning
-Consider only the gems installed on your system are scanned by the library.  
+Consider only the gems local to your system are scanned by the library.  
 No remote fetching is performed.
 
 ## Installation
@@ -38,7 +39,20 @@ Both runtime and development dependencies are counted (identical dependencies ar
 Just the runtime dependencies tree is printed to screen:
 
 ```shell
-$ lapidarius sinatra
+sinatra (1.4.7)
+├── rack (~> 1.5)
+├── rack-protection (~> 1.4)
+│   └── rack (>= 0)
+└── tilt (< 3, >= 1.3)
+
+3 runtime, 4 development
+```
+
+### Version
+By default this library scans for the first version `>= 0`.  
+In case you have multiple versions of a gem installed, just specify the version you need to cut as the second argument:
+```shell
+$ lapidarius sinatra 2.0.0
 sinatra (2.0.0)
 ├── mustermann (~> 1.0)
 ├── rack (~> 2.0)
