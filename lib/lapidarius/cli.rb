@@ -21,15 +21,16 @@ module Lapidarius
 
     def call
       @spinner.call do
-        @io.puts output
+        @output = cut
       end
+      @io.puts @output
     end
 
     private def cutter
       @cutter.new(name: @name, cmd_klass: @command, version: @version, remote: @remote)
     end
 
-    private def output
+    private def cut
       return unless @name
       gem = cutter.call
       @tree::new(gem).to_s
@@ -64,7 +65,8 @@ module Lapidarius
   class Spinner
     CHARS = %w[| / - \\]
 
-    def initialize(fps = 15, delay = 1.0)
+    def initialize(io = STDOUT, fps = 15, delay = 1.0)
+      @io = io
       @fps = fps.to_i
       @delay = delay.to_f / @fps
       @iter = 0
@@ -73,11 +75,13 @@ module Lapidarius
     def call
       spinner = Thread.new do
         while @iter do
-          print CHARS[(@iter+=1) % CHARS.length]
+          @io.print CHARS[(@iter+=1) % CHARS.length]
           sleep @delay
-          print "\b"
+          @io.print "\b"
+          @io.flush
         end
       end
+    ensure
       yield.tap do
         @iter = false
         spinner.join
