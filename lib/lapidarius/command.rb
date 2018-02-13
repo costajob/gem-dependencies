@@ -11,10 +11,18 @@ module Lapidarius
       @dep.ui = ui_klass.new
     end
 
-    def call(gem, version = nil)
+    def call(*args)
       @dep.ui.clear!
-      version ? @dep.invoke(gem, '-v', version) : @dep.invoke(gem)
+      @dep.invoke(*options(args))
       @dep.ui.out
+    end
+
+    private def options(args)
+      name, version, remote = args 
+      [name].tap do |args|
+        args.concat(["-v", version]) if version
+        args << "-r" if remote
+      end
     end
   end
 end

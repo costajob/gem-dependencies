@@ -38,7 +38,7 @@ module Stubs
   end
 
   class Command
-    def call(gem, version = nil)
+    def call(gem, version = nil, remote = nil)
       Stubs.data(gem)
     end
   end

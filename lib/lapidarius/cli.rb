@@ -1,29 +1,22 @@
+require "optparse"
 require "lapidarius/cutter"
 
 module Lapidarius
   class CLI
-    HELP_FLAGS = %w[-h --help]
-    COL_WIDTH = 23
+    attr_reader :name, :version, :remote
 
-    attr_reader :name, :version
-
-    def initialize(input, 
-                   out = STDOUT, 
-                   command = Command,
-                   cutter = Cutter,
-                   tree = Tree)
-      @name, @version = Array(input).map(&:strip)
-      @out = out
-      @cutter = cutter.new(name: @name, cmd_klass: command, version: @version)
+    def initialize(args: [], io: STDOUT, command: Command, cutter: Cutter, tree: Tree)
+      @io = io
       @tree = tree
+      parser.parse!(args)
+      @cutter = cutter.new(name: @name, cmd_klass: command, version: @version, remote: @remote)
     end
 
     def call
-      @out.puts output
+      @io.puts output
     end
 
     private def output
-      return help if help?
       return unless @name
       gem = @cutter.call
       @tree::new(gem).to_s
@@ -31,16 +24,26 @@ module Lapidarius
       e.message
     end
 
-    private def help?
-      HELP_FLAGS.include?(@name)
-    end
+    private def parser
+      OptionParser.new do |opts|
+        opts.banner = %q{Usage: lapidarius sinatra --version=1.4.7 --remote}
 
-    private def help
-      [].tap do |h|
-        h << %q{Usage: lapidarius <name> <version>}
-        h << "    %-#{COL_WIDTH}s Print this help" % "-h --help"
-        h << "    %-#{COL_WIDTH}s Gem's name to cut" % "<name>"
-        h << "    %-#{COL_WIDTH}s Gem's version to cut" % "<version>"
+        opts.on("-nNAME", "--name=NAME", "Specify the gem name to cut") do |name|
+          @name = name
+        end
+
+        opts.on("-vVERSION", "--version=VERSION", "Specify the gem version to cut") do |version|
+          @version = version
+        end
+
+        opts.on("-r", "--remote", "Fetch gem remotely") do |remote|
+          @remote = true
+        end
+
+        opts.on("-h", "--help", "Prints this help") do
+          @io.puts opts
+          exit
+        end
       end
     end
   end

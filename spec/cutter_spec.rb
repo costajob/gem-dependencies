@@ -1,10 +1,11 @@
 require "helper"
 
 describe Lapidarius::Cutter do
-  let(:cutter) { Lapidarius::Cutter.new(name: "sinatra", cmd_klass: Stubs::Command, version: "1.4.7") }
+  let(:cutter) { Lapidarius::Cutter.new(name: "sinatra", cmd_klass: Stubs::Command, version: "1.4.7", remote: true) }
 
-  it "must set command version" do
+  it "must set options" do
     cutter.version.must_equal "1.4.7"
+    cutter.remote.must_equal true
   end
 
   it "must cut gem with runtime dependencies" do

@@ -4,10 +4,10 @@
   * [Alternatives](#alternatives)
     * [gem dep](#gem-dep)
     * [bundle viz](#bundle-viz)
-* [Warning](#warning)
 * [Installation](#installation)
 * [Usage](#usage)
     * [Version](#version)
+    * [Remote](#remote)
 
 ## Scope
 This gem is aimed to recursively collect the `runtime dependencies` footprint of the specified gem.  
@@ -22,10 +22,6 @@ The standard *gem dep* command just unearth one level of dependencies.
 #### bundle viz
 The *bundle viz* command relies on the Gemfile and the [graphviz](http://www.graphviz.org/) library to generate a visual representation of the gem inter-dependencies.  
 While it is great to visualize inter-dependencies, i have hard times figuring out gem's  runtime footprint.
-
-## Warning
-Consider only the gems local to your system are scanned by the library.  
-No remote fetching is performed.
 
 ## Installation
 Install the gem from your shell:
@@ -50,9 +46,9 @@ sinatra (1.4.7)
 
 ### Version
 By default this library scans for the first version `>= 0`.  
-In case you have multiple versions of a gem installed, just specify the version you need to cut as the second argument:
+In case you have multiple versions of a gem installed, just specify the `-v` option:
 ```shell
-$ lapidarius sinatra 2.0.0
+$ lapidarius sinatra -v 2.0.0
 sinatra (2.0.0)
 ├── mustermann (~> 1.0)
 ├── rack (~> 2.0)
@@ -61,4 +57,11 @@ sinatra (2.0.0)
 └── tilt (~> 2.0)
 
 4 runtime, 4 development
+```
+
+## Remote
+By default this library scan for local gems. If you want to scan for remote ones, just
+specify the `-r` option as the third argument:
+```shell
+$ lapidarius grape -r
 ```
