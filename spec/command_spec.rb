@@ -15,7 +15,7 @@ describe Lapidarius::Command do
 
   it "must parse all options" do
     command.call("sinatra", "1.4.7", true)
-    command.dep.args.must_equal ["sinatra", "-v", "1.4.7", '-r']
+    command.dep.args.must_equal ["sinatra", "-v", "1.4.7", "-b", "-B", "10000"]
   end
 
   it "must return gem specification" do

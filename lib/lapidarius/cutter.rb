@@ -8,7 +8,7 @@ module Lapidarius
 
     attr_reader :version, :remote
 
-    def initialize(name:, cmd_klass: Command, version: nil, remote: false)
+    def initialize(name:, cmd_klass: Command, version: nil, remote: nil)
       @name = name
       @cmd = cmd_klass.new
       @version = version
@@ -22,14 +22,14 @@ module Lapidarius
       end
     end
 
-    private def recurse(name = @name, gem = nil, version = @version, remote = @remote)
+    private def recurse(name: @name, gem: nil, version: @version, remote: @remote)
       tokens = tokenize(name, version, remote)
       token = tokens.shift
       gem ||= Gem.factory(token)
       tokens.each do |t|
         next unless dep = Gem.factory(t)
         gem << dep
-        recurse(dep.name, dep, nil, remote)
+        recurse(name: dep.name, gem: dep, version: nil, remote: remote)
       end
       gem
     end

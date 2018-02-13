@@ -21,7 +21,7 @@ module Lapidarius
       name, version, remote = args 
       [name].tap do |args|
         args.concat(["-v", version]) if version
-        args << "-r" if remote
+        args.concat(["-b", "-B", "10000"]) if remote
       end
     end
   end
