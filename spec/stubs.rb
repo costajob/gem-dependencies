@@ -32,7 +32,8 @@ module Stubs
 
     def invoke(*args)
       @args = args
-      data = Stubs.data(@args[0])
+      gem = @args[0].gsub(/\W/, '')
+      data = Stubs.data(gem)
       ui.say(data)
     end
   end

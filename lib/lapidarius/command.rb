@@ -19,7 +19,8 @@ module Lapidarius
 
     private def options(args)
       name, version, remote = args 
-      [name].tap do |args|
+      [].tap do |args|
+        args << "/^#{name}$/" if name
         args.concat(["-v", version]) if version
         args.concat(["-b", "-B", "10000"]) if remote
       end
