@@ -59,7 +59,7 @@ sinatra (1.4.7)
 3 runtime, 4 development
 ```
 
-## Remote
+### Remote
 By default this library scan for local gems, if you want to scan for remote ones specify the `-r` option (be aware of slowness):
 ```shell
 $ lapidarius roda -v 3.3.0 -r
