@@ -3,6 +3,8 @@ require "lapidarius/tree"
 
 module Lapidarius
   class Gem
+    VER_STRIP_CHARS = %w[> < = ~]
+
     extend Forwardable
 
     def_delegators :@deps, :size, :each_with_index
@@ -22,7 +24,7 @@ module Lapidarius
       end
     end
 
-    attr_reader :name, :version, :deps
+    attr_reader :name, :deps
     attr_accessor :dev_count
 
     def initialize(name:, version:, deps: [])
@@ -42,11 +44,15 @@ module Lapidarius
     end
 
     def to_s
-      "#{name} (#{version})"
+      "#{name} (#{@version})"
     end
 
     def count
       flatten_deps.size
+    end
+
+    def version
+      @version.gsub(/#{VER_STRIP_CHARS.join("|")}/, "").split(",").map(&:strip).min
     end
 
     protected def flatten_deps

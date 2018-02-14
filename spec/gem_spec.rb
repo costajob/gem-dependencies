@@ -22,6 +22,14 @@ describe Lapidarius::Gem do
     -> { Lapidarius::Gem.factory("No gems found matching noent (>= 0)") }.must_raise Lapidarius::Gem::NotInstalledError
   end
 
+  it "must convert version" do
+    Lapidarius::Gem.factory("Gem i18n-0.7.0").version.must_equal "0.7.0"
+    Lapidarius::Gem.factory("actionmailer (= 2.3.6)").version.must_equal "2.3.6"
+    Lapidarius::Gem.factory("multi_json (>= 1.3.2)").version.must_equal "1.3.2"
+    Lapidarius::Gem.factory("ZenTest (~> 4.3)").version.must_equal "4.3"
+    Lapidarius::Gem.factory("tilt (< 3, >= 1.3)").version.must_equal "1.3"
+  end
+
   it "must delegate size method" do
     sinatra.size.must_equal 3
   end

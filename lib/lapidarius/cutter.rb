@@ -29,7 +29,7 @@ module Lapidarius
       tokens.each do |t|
         next unless dep = Gem.factory(t)
         gem << dep
-        recurse(name: dep.name, gem: dep, version: nil, remote: remote)
+        recurse(name: dep.name, gem: dep, version: dep.version, remote: remote)
       end
       gem
     end
