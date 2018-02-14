@@ -1,5 +1,4 @@
 require "rubygems/commands/dependency_command"
-require "rubygems/requirement"
 require "lapidarius/ui"
 
 module Lapidarius

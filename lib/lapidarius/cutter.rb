@@ -1,6 +1,5 @@
 require "lapidarius/gem"
 require "lapidarius/command"
-require "rubygems/requirement"
 
 module Lapidarius
   class Cutter
