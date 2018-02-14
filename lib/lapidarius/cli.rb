@@ -33,14 +33,14 @@ module Lapidarius
     private def cut
       return unless @name
       gem = cutter.call
-      @tree::new(gem).to_s
+      @tree::new(gem, @quiet).out
     rescue Gem::NotInstalledError => e
       e.message
     end
 
     private def parser
       OptionParser.new do |opts|
-        opts.banner = %q{Usage: lapidarius sinatra --version=1.4.7 --remote}
+        opts.banner = %q{Usage: lapidarius sinatra --version=1.4.7 --remote --quiet}
 
         opts.on("-vVERSION", "--version=VERSION", "Specify the gem version to cut") do |version|
           @version = version
@@ -48,6 +48,10 @@ module Lapidarius
 
         opts.on("-r", "--remote", "Fetch gem remotely") do |remote|
           @remote = true
+        end
+
+        opts.on("-q", "--quiet", "Hide dependencies tree") do |quiet|
+          @quiet = true
         end
 
         opts.on(*HELP_FLAGS, "Prints this help") do

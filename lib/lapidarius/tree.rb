@@ -5,19 +5,25 @@ module Lapidarius
     NESTED = "├── "
     STRAIGHT = "│   "
 
-    def initialize(gem)
+    def initialize(gem, quiet = false)
       @gem = gem
+      @quiet = quiet
       @out = []
     end
 
-    def to_s
+    def out
       return @out unless @out.empty?
+      return count if @quiet
       @out.tap do |out|
         out << @gem
         recurse
         out << ""
-        out << "#{@gem.count} runtime, #{@gem.dev_count} development"
+        out << count
       end
+    end
+
+    def count
+      "#{@gem.count} runtime, #{@gem.dev_count} development"
     end
 
     private def recurse(gem = @gem, prefix = "")

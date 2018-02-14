@@ -8,6 +8,7 @@
 * [Usage](#usage)
     * [Version](#version)
     * [Remote](#remote)
+    * [Quiet](#quiet)
 
 ## Scope
 This gem is aimed to recursively collect the `runtime dependencies` footprint of the specified gem.  
@@ -73,4 +74,12 @@ roda (3.3.0)
 └── rack (>= 0)
 
 1 runtime, 10 development
+```
+
+### Quiet
+Some gems has several interdependencies that results in a multitude of tree branches.  
+In case you just dare to count dependencies without the visual noise, you can pass the `-q` option:
+```shell
+lapidarius rails -v 5.1.4 -r -q
+37 runtime, 49 development
 ```
