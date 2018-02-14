@@ -14,6 +14,7 @@ module Lapidarius
       @version = version
       @remote = remote
       @dev_deps = []
+      @cache = {}
     end
 
     def call
@@ -29,7 +30,10 @@ module Lapidarius
       tokens.each do |t|
         next unless dep = Gem.factory(t)
         gem << dep
-        recurse(name: dep.name, gem: dep, version: dep.version, remote: remote)
+        @cache.fetch(dep.name) do
+          recurse(name: dep.name, gem: dep, version: dep.version, remote: remote)
+          @cache[dep.name] = true
+        end
       end
       gem
     end
