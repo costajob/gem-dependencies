@@ -63,17 +63,29 @@ sinatra (1.4.7)
 ### Remote
 By default this library scan for local gems, warning if the gem is not found:
 ```shell
-lapidarius roda -v 3.3.0
-No gems found matching roda (= 3.0.0)
+lapidarius rails -v 2.3.6
+No gems found matching rails (= 2.3.6)
 ```
 
 If you want to scan for remote gems specify the `-r` option (be aware of slowness):
 ```shell
-lapidarius roda -v 3.3.0 -r
-roda (3.3.0)
-└── rack (>= 0)
+lapidarius rails -v 2.3.6 -r
+rails (2.3.6)
+├── actionmailer (= 2.3.6)
+│   └── actionpack (= 2.3.6)
+│       ├── activesupport (= 2.3.6)
+│       └── rack (~> 1.1.0)
+├── actionpack (= 2.3.6)
+│   ├── activesupport (= 2.3.6)
+│   └── rack (~> 1.1.0)
+├── activerecord (= 2.3.6)
+│   └── activesupport (= 2.3.6)
+├── activeresource (= 2.3.6)
+│   └── activesupport (= 2.3.6)
+├── activesupport (= 2.3.6)
+└── rake (>= 0.8.3)
 
-1 runtime, 10 development
+7 runtime, 6 development
 ```
 
 ### Quiet
@@ -81,5 +93,5 @@ Some gems has several interdependencies that results in a multitude of tree bran
 In case you just dare to count dependencies without the visual noise, you can pass the `-q` option:
 ```shell
 lapidarius rails -v 5.1.4 -r -q
-37 runtime, 49 development
+42 runtime, 48 development
 ```

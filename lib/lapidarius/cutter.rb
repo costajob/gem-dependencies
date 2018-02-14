@@ -23,16 +23,15 @@ module Lapidarius
       end
     end
 
-    private def recurse(name: @name, gem: nil, version: @version, remote: @remote)
-      tokens = tokenize(name, version, remote)
+    private def recurse(name: @name, gem: nil, version: @version)
+      tokens = tokenize(name, version, @remote)
       token = tokens.shift
       gem ||= Gem.factory(token)
       tokens.each do |t|
         next unless dep = Gem.factory(t)
-        gem << dep
-        @cache.fetch(dep.name) do
-          recurse(name: dep.name, gem: dep, version: dep.version, remote: remote)
-          @cache[dep.name] = true
+        gem << @cache.fetch(t) do
+          recurse(name: dep.name, gem: dep, version: dep.version)
+          @cache[t] = dep
         end
       end
       gem
