@@ -4,18 +4,16 @@ describe Lapidarius::Gem do
   let(:sinatra) { Stubs::Gems.sinatra }
 
   it "must factory gem properly" do
-    Lapidarius::Gem.factory("Gem i18n-0.7.0").must_equal Lapidarius::Gem.new(name: "i18n", version: "0.7.0")
+    Lapidarius::Gem.factory("Gem rails-5.2.0.rc1").must_equal Lapidarius::Gem.new(name: "rails", version: "5.2.0.rc1")
+    Lapidarius::Gem.factory("Gem rails-5.2.0.beta2").must_equal Lapidarius::Gem.new(name: "rails", version: "5.2.0.beta2")
     Lapidarius::Gem.factory("Gem multi_json-1.12.1").must_equal Lapidarius::Gem.new(name: "multi_json", version: "1.12.1")
     Lapidarius::Gem.factory("Gem rack-app-5.3.2").must_equal Lapidarius::Gem.new(name: "rack-app", version: "5.3.2")
     Lapidarius::Gem.factory("Gem lapidarius-1.0").must_equal Lapidarius::Gem.new(name: "lapidarius", version: "1.0")
     Lapidarius::Gem.factory("Gem RubyInline-3.12.4").must_equal Lapidarius::Gem.new(name: "RubyInline", version: "3.12.4")
+    Lapidarius::Gem.factory("actionmodel (= 5.2.0.rc1)").must_equal Lapidarius::Gem.new(name: "actionmodel", version: "5.2.0.rc1")
     Lapidarius::Gem.factory("multi_json (>= 1.3.2)").must_equal Lapidarius::Gem.new(name: "multi_json", version: ">= 1.3.2")
     Lapidarius::Gem.factory("ZenTest (~> 4.3)").must_equal Lapidarius::Gem.new(name: "ZenTest", version: "~> 4.3")
     Lapidarius::Gem.factory("tilt (< 3, >= 1.3)").must_equal Lapidarius::Gem.new(name: "tilt", version: "< 3, >= 1.3")
-  end
-
-  it "must filter development gems" do
-    Lapidarius::Gem.factory("rake (= 10.4.2, development)").must_be_nil
   end
 
   it "must raise an error when gem is missing" do
@@ -23,11 +21,14 @@ describe Lapidarius::Gem do
   end
 
   it "must convert version" do
+    Lapidarius::Gem.factory("Gem rails-5.2.0.beta2").version.must_equal "5.2.0.beta2"
     Lapidarius::Gem.factory("Gem i18n-0.7.0").version.must_equal "0.7.0"
+    Lapidarius::Gem.factory("actionmodel (= 5.2.0.rc1)").version.must_equal "5.2.0.rc1"
     Lapidarius::Gem.factory("actionmailer (= 2.3.6)").version.must_equal "2.3.6"
     Lapidarius::Gem.factory("multi_json (>= 1.3.2)").version.must_equal "1.3.2"
     Lapidarius::Gem.factory("ZenTest (~> 4.3)").version.must_equal "4.3"
     Lapidarius::Gem.factory("tilt (< 3, >= 1.3)").version.must_equal "1.3"
+    Lapidarius::Gem.factory("tilt (!= 1.3.0, ~> 1.1)").version.must_equal "1.1"
   end
 
   it "must delegate size method" do

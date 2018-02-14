@@ -3,7 +3,7 @@ require "lapidarius/tree"
 
 module Lapidarius
   class Gem
-    VER_STRIP_CHARS = %w[> < = ~]
+    VER_STRIP_CHARS = %w[> < = ~ !]
 
     extend Forwardable
 
@@ -19,7 +19,7 @@ module Lapidarius
       token.match(/Gem ([a-zA-Z0-9\-_]+)-(.+)/) do |m|
         return new(name: m[1], version: m[2])
       end
-      token.match(/([a-zA-Z0-9\-_]+) \(([0-9~<>=, \.]+)\)/) do |m|
+      token.match(/([a-zA-Z0-9\-_]+) \((.+)\)/) do |m|
         return new(name: m[1], version: m[2])
       end
     end
