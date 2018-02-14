@@ -89,7 +89,7 @@ rails (2.3.6)
 ```
 
 ### Quiet
-Some gems has several interdependencies that results in a multitude of tree branches.  
+Some gems have several interdependencies that results in a multitude of tree branches.  
 In case you just dare to count dependencies without the visual noise, you can pass the `-q` option:
 ```shell
 lapidarius rails -v 5.1.4 -r -q
