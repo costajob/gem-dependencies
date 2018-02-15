@@ -57,12 +57,8 @@ sinatra (1.4.7)
 │   └── rack (>= 0)
 └── tilt (< 3, >= 1.3)
 
-3 runtime, 22 development
+3 runtime, 4 development
 ```
-
-#### Dependencies versions
-Consider dependencies are scanned by their minimal working version, so in the previous 
-example `tilt 1.3` is fetched (finding 16 development dependencies).
 
 ### Remote
 By default this library scan for local gems, warning if the gem is not found:
@@ -90,13 +86,13 @@ rails (1.2.6)
 ├── activesupport (= 1.4.4)
 └── rake (>= 0.7.2)
 
-6 runtime, 0 development
+6 runtime, 5 development
 ```
 
 ### Quiet
 Some gems have several interdependencies that results in a multitude of tree branches.  
 In case you just dare to count dependencies without the visual noise, you can pass the `-q` option:
 ```shell
-lapidarius rails -v 5.1.4 -r -q
-43 runtime, 58 development
+lapidarius rails -v 5.1.5 -r -q
+37 runtime, 48 development
 ```

@@ -65,7 +65,7 @@ module Stubs
 
     def sinatra
       Lapidarius::Gem.new(name: "sinatra", version: "1.4.7", deps: [tilt, rack, rack_protection]).tap do |gem|
-        gem.dev_count = 5
+        gem.dev_count = 7
       end
     end
   end

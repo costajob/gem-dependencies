@@ -26,12 +26,12 @@ module Lapidarius
       fail KindError, "no gem can be created from #{token}"
     end
 
-    attr_reader :name, :deps
+    attr_reader :name, :deps, :version
     attr_accessor :dev_count
 
     def initialize(name:, version:, deps: [])
       @name = name
-      @version_raw = version
+      @version = version
       @deps = deps
     end
 
@@ -46,28 +46,15 @@ module Lapidarius
     end
 
     def to_s
-      "#{name} (#{@version_raw})"
+      "#{name} (#{@version})"
     end
 
     def count
       flatten_deps.size
     end
 
-    def version
-      return @version if @version
-      stripped = @version_raw.gsub(/#{INVALID_VER_CHARS.join("|")}/, "")
-      tokens = stripped.split(",").map(&:strip)
-      min = tokens.min
-      @version = min.to_f.zero? ? DEFAULT_VER : min
-    end
-
     protected def flatten_deps
-      deps.reduce(deps) do |acc, dep|
-        acc.concat dep.flatten_deps
-      end.tap do |deps|
-        deps.flatten!
-        deps.uniq!(&:name)
-      end
+      deps.reduce(deps) { |acc, dep| acc.concat dep.flatten_deps }.flatten.uniq(&:name)
     end
 
     private def gem?(gem)

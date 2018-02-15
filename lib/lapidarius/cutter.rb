@@ -46,14 +46,14 @@ module Lapidarius
 
     private def tokenize(name, version, remote)
       src = @cmd.call(name, version, remote)
-      data = normalize(src)
+      data = latest_match(src)
       dev, tokens = data.partition { |token| token.match(/#{DEVELOPMENT}/) }
       @dev_deps.concat(dev)
       tokens
     end
 
-    private def normalize(src)
-      src.split(/\n\n/).map!(&:strip).first.split("\n").map(&:strip)
+    private def latest_match(src)
+      src.split(/\n\n/).map!(&:strip).last.split("\n").map(&:strip)
     end
   end
 end

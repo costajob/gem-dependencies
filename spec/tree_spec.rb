@@ -14,11 +14,11 @@ describe Lapidarius::Tree do
     tree.out[3].start_with?(Lapidarius::Tree::STRAIGHT).must_equal true
     tree.out[4].start_with?(Lapidarius::Tree::CURVED).must_equal true
     tree.out[5].must_be_empty
-    tree.out[6].must_equal "4 runtime, 5 development"
+    tree.out[6].must_equal "4 runtime, 7 development"
   end
 
   it "must return just counting" do
     tree = Lapidarius::Tree.new(Stubs::Gems::sinatra, true)
-    tree.out.must_equal "4 runtime, 5 development"
+    tree.out.must_equal "4 runtime, 7 development"
   end
 end

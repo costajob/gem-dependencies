@@ -7,30 +7,25 @@ module Lapidarius
 
     attr_reader :name, :version, :remote
 
-    def initialize(args: [], io: STDOUT, command: Command, cutter: Cutter, 
-                   tree: Tree, spinner: Spinner.new)
+    def initialize(args: [], io: STDOUT, command: Command, cutter: Cutter, tree: Tree)
       @args = args
       @io = io
       @command = command
       @cutter = cutter
       @tree = tree
-      @spinner = spinner
       @name = @args.shift unless help?
       parser.parse!(@args)
     end
 
     def call
-      @spinner.call do
-        @output = cut
-      end
-      @io.puts @output
+      @io.puts out
     end
 
     private def cutter
       @cutter.new(name: @name, cmd_klass: @command, version: @version, remote: @remote)
     end
 
-    private def cut
+    private def out
       return unless @name
       gem = cutter.call
       @tree::new(gem, @quiet).out
@@ -63,33 +58,6 @@ module Lapidarius
 
     private def help?
       HELP_FLAGS.any? { |h| @args.first == h }
-    end
-  end
-
-  class Spinner
-    CHARS = %w[| / - \\]
-
-    def initialize(io = STDOUT, fps = 15, delay = 1.0)
-      @io = io
-      @fps = fps.to_i
-      @delay = delay.to_f / @fps
-      @iter = 0
-    end
-
-    def call
-      spinner = Thread.new do
-        while @iter do
-          @io.print CHARS[(@iter+=1) % CHARS.length]
-          sleep @delay
-          @io.print "\b"
-          @io.flush
-        end
-      end
-    ensure
-      yield.tap do
-        @iter = false
-        spinner.join
-      end
     end
   end
 end

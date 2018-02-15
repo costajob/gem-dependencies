@@ -2,10 +2,9 @@ require "helper"
 
 describe Lapidarius::CLI do
   let(:io) { StringIO.new }
-  let(:spinner) { ->(&b) { b.call } }
 
   it "must print nothing if no gem is specified" do
-    Lapidarius::CLI.new(io: io, spinner: spinner).call
+    Lapidarius::CLI.new(io: io).call
     io.string.strip.must_be_empty
   end
 
@@ -17,17 +16,17 @@ describe Lapidarius::CLI do
   end
 
   it "must print runtime dependencies" do
-    Lapidarius::CLI.new(args: ["sinatra"], io: io, spinner: spinner, command: Stubs::Command).call
-    io.string.must_equal "sinatra (1.4.7)\n├── rack (~> 1.5)\n├── rack-protection (~> 1.4)\n│   └── rack (>= 0)\n└── tilt (< 3, >= 1.3)\n\n3 runtime, 5 development\n"
+    Lapidarius::CLI.new(args: ["sinatra"], io: io, command: Stubs::Command).call
+    io.string.must_equal "sinatra (1.4.7)\n├── rack (~> 1.5)\n├── rack-protection (~> 1.4)\n│   └── rack (>= 0)\n└── tilt (< 3, >= 1.3)\n\n3 runtime, 7 development\n"
   end
 
   it "must print just counting" do
-    Lapidarius::CLI.new(args: %w[sinatra --quiet], io: io, spinner: spinner, command: Stubs::Command).call
-    io.string.must_equal "3 runtime, 5 development\n"
+    Lapidarius::CLI.new(args: %w[sinatra --quiet], io: io, command: Stubs::Command).call
+    io.string.must_equal "3 runtime, 7 development\n"
   end
 
   it "must warn about missing gems" do
-    Lapidarius::CLI.new(args: ["noent"], io: io, spinner: spinner, command: Stubs::Command).call
+    Lapidarius::CLI.new(args: ["noent"], io: io, command: Stubs::Command).call
     io.string.must_equal %Q{No gems found matching noent (>= 0)\n}
   end
 

@@ -1,3 +1,3 @@
 module Lapidarius
-  VERSION = "4.5.0"
+  VERSION = "4.5.5"
 end

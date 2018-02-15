@@ -19,7 +19,7 @@ describe Lapidarius::Cutter do
 
   it "must compute development dependencies count" do
     gem = cutter.call
-    gem.dev_count.must_equal 5
+    gem.dev_count.must_equal 7
   end
 
   it "must raise kind error if no gem can created" do
