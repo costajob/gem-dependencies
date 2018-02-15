@@ -3,7 +3,8 @@ require "lapidarius/tree"
 
 module Lapidarius
   class Gem
-    VER_STRIP_CHARS = %w[> < = ~ !]
+    INVALID_VER_CHARS = %w[> < = ~ !]
+    DEFAULT_VER = ">= 0"
 
     extend Forwardable
 
@@ -22,6 +23,7 @@ module Lapidarius
       token.match(/([a-zA-Z0-9\-_]+) \((.+)\)/) do |m|
         return new(name: m[1], version: m[2])
       end
+      fail KindError, "no gem can be created from #{token}"
     end
 
     attr_reader :name, :deps
@@ -29,7 +31,7 @@ module Lapidarius
 
     def initialize(name:, version:, deps: [])
       @name = name
-      @version = version
+      @version_raw = version
       @deps = deps
     end
 
@@ -44,7 +46,7 @@ module Lapidarius
     end
 
     def to_s
-      "#{name} (#{@version})"
+      "#{name} (#{@version_raw})"
     end
 
     def count
@@ -52,7 +54,11 @@ module Lapidarius
     end
 
     def version
-      @version.gsub(/#{VER_STRIP_CHARS.join("|")}/, "").split(",").map(&:strip).min
+      return @version if @version
+      stripped = @version_raw.gsub(/#{INVALID_VER_CHARS.join("|")}/, "")
+      tokens = stripped.split(",").map(&:strip)
+      min = tokens.min
+      @version = min.to_f.zero? ? DEFAULT_VER : min
     end
 
     protected def flatten_deps

@@ -34,7 +34,7 @@ module Lapidarius
       return unless @name
       gem = cutter.call
       @tree::new(gem, @quiet).out
-    rescue Gem::NotInstalledError => e
+    rescue Gem::NotInstalledError, Gem::KindError => e
       e.message
     end
 

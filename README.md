@@ -31,7 +31,7 @@ gem install lapidarius
 ```
 
 ## Usage
-This library invokes the `Gem::Commands::DependencyCommand` class recursively to collect all the levels of dependency.  
+This library invokes the [Gem::Commands::DependencyCommand](https://github.com/rubygems/rubygems/blob/master/lib/rubygems/commands/dependency_command.rb) class recursively to collect all the levels of dependency.  
 Both runtime and development dependencies are counted (identical dependencies are counted once), but just the former are printed on screen:
 
 ```shell
@@ -43,7 +43,7 @@ sinatra (2.0.0)
 │   └── rack (>= 0)
 └── tilt (~> 2.0)
 
-4 runtime, 4 development
+4 runtime, 5 development
 ```
 
 ### Version
@@ -57,35 +57,40 @@ sinatra (1.4.7)
 │   └── rack (>= 0)
 └── tilt (< 3, >= 1.3)
 
-3 runtime, 4 development
+3 runtime, 22 development
 ```
+
+#### Dependencies versions
+Consider dependencies are scanned by their minimal working version, so in the previous 
+example `tilt 1.3` is fetched (finding 16 development dependencies).
 
 ### Remote
 By default this library scan for local gems, warning if the gem is not found:
 ```shell
-lapidarius rails -v 2.3.6
-No gems found matching rails (= 2.3.6)
+lapidarius rails -v 1.2.6
+No gems found matching rails (= 1.2.6)
 ```
 
 If you want to scan for remote gems specify the `-r` option (be aware of slowness):
 ```shell
-lapidarius rails -v 2.3.6 -r
-rails (2.3.6)
-├── actionmailer (= 2.3.6)
-│   └── actionpack (= 2.3.6)
-│       ├── activesupport (= 2.3.6)
-│       └── rack (~> 1.1.0)
-├── actionpack (= 2.3.6)
-│   ├── activesupport (= 2.3.6)
-│   └── rack (~> 1.1.0)
-├── activerecord (= 2.3.6)
-│   └── activesupport (= 2.3.6)
-├── activeresource (= 2.3.6)
-│   └── activesupport (= 2.3.6)
-├── activesupport (= 2.3.6)
-└── rake (>= 0.8.3)
+lapidarius rails -v 1.2.6 -r
+rails (1.2.6)
+├── actionmailer (= 1.3.6)
+│   └── actionpack (= 1.13.6)
+│       └── activesupport (= 1.4.4)
+├── actionpack (= 1.13.6)
+│   └── activesupport (= 1.4.4)
+├── actionwebservice (= 1.2.6)
+│   ├── actionpack (= 1.13.6)
+│   │   └── activesupport (= 1.4.4)
+│   └── activerecord (= 1.15.6)
+│       └── activesupport (= 1.4.4)
+├── activerecord (= 1.15.6)
+│   └── activesupport (= 1.4.4)
+├── activesupport (= 1.4.4)
+└── rake (>= 0.7.2)
 
-7 runtime, 6 development
+6 runtime, 0 development
 ```
 
 ### Quiet
@@ -93,5 +98,5 @@ Some gems have several interdependencies that results in a multitude of tree bra
 In case you just dare to count dependencies without the visual noise, you can pass the `-q` option:
 ```shell
 lapidarius rails -v 5.1.4 -r -q
-42 runtime, 48 development
+43 runtime, 58 development
 ```

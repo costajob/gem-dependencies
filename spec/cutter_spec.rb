@@ -22,8 +22,8 @@ describe Lapidarius::Cutter do
     gem.dev_count.must_equal 5
   end
 
-  it "must return nil if gem is not created" do
+  it "must raise kind error if no gem can created" do
     cutter = Lapidarius::Cutter.new(name: "raise_error", cmd_klass: Stubs::Command)
-    cutter.call.must_be_nil
+    -> { cutter.call }.must_raise Lapidarius::Gem::KindError
   end
 end

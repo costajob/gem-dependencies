@@ -24,20 +24,24 @@ module Lapidarius
 
     private def recurse(name: @name, gem: nil, version: @version)
       tokens = tokenize(name, version, @remote)
-      token = tokens.shift
-      gem ||= Gem.factory(token)
-      tokens.each do |t|
-        next unless dep = Gem.factory(t)
-        gem << @cache.fetch(t) do
-          recurse(name: dep.name, gem: dep, version: dep.version)
-          @cache[t] = dep
-        end
+      parent = tokens.shift
+      gem ||= Gem.factory(parent)
+      tokens.reduce(gem) do |acc, token|
+        acc << dependency(token); acc
       end
-      gem
     end
 
     def dev_count
       @dev_deps.map { |e| e.split(" ").first }.uniq.count
+    end
+
+    private def dependency(token)
+      @cache.fetch(token) do
+        Gem.factory(token).tap do |dep|
+          recurse(name: dep.name, gem: dep, version: dep.version)
+          @cache[token] = dep
+        end
+      end
     end
 
     private def tokenize(name, version, remote)

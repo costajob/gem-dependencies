@@ -29,6 +29,7 @@ describe Lapidarius::Gem do
     Lapidarius::Gem.factory("ZenTest (~> 4.3)").version.must_equal "4.3"
     Lapidarius::Gem.factory("tilt (< 3, >= 1.3)").version.must_equal "1.3"
     Lapidarius::Gem.factory("tilt (!= 1.3.0, ~> 1.1)").version.must_equal "1.1"
+    Lapidarius::Gem.factory("rake (>= 0, development)").version.must_equal ">= 0"
   end
 
   it "must delegate size method" do
