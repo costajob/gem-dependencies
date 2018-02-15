@@ -47,7 +47,7 @@ sinatra (2.0.0)
 ```
 
 ### Version
-By default this library scans for the first version `>= 0` found at [rubygems.org](https://rubygems.org/).  
+By default this library scans for the latest available version `>= 0` found at [rubygems.org](https://rubygems.org/).  
 In case you are interested on a specific version just specify the `-v` option:
 ```shell
 lapidarius sinatra -v 1.4.7
