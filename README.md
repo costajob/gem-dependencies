@@ -31,8 +31,8 @@ gem install lapidarius
 ```
 
 ## Usage
-This library invokes the [Gem::Commands::DependencyCommand](https://github.com/rubygems/rubygems/blob/master/lib/rubygems/commands/dependency_command.rb) class recursively to collect all the levels of dependency.  
-Both runtime and development dependencies are counted (identical dependencies are counted once), but just the former are printed on screen:
+This library relies heavily on the [Gem::Commands::DependencyCommand](https://github.com/rubygems/rubygems/blob/master/lib/rubygems/commands/dependency_command.rb) class to recursively the dependencies tree.   
+Both runtime and development dependencies are counted once, but just the former are printed on screen:
 
 ```shell
 lapidarius sinatra
@@ -61,7 +61,7 @@ sinatra (1.4.7)
 ```
 
 ### Remote
-By default this library scan for local gems, warning if the gem is not found:
+By default this library scan for local gems, warning if the gem is not installed:
 ```shell
 lapidarius rails -v 1.2.6
 No gems found matching rails (= 1.2.6)
