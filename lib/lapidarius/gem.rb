@@ -50,11 +50,14 @@ module Lapidarius
     end
 
     def count
-      flatten_deps.size
+      @count ||= flatten_deps!.size
     end
 
-    protected def flatten_deps
-      deps.reduce(deps) { |acc, dep| acc.concat dep.flatten_deps }.flatten.uniq(&:name)
+    protected def flatten_deps!
+      deps.reduce(deps) { |acc, dep| acc.concat dep.flatten_deps! }.tap do |deps|
+        deps.flatten!
+        deps.uniq!(&:name)
+      end
     end
 
     private def gem?(gem)
