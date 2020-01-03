@@ -3,6 +3,7 @@ require "lapidarius/tree"
 
 module Lapidarius
   class Gem
+    VALID_CHARS = "a-zA-Z0-9\\-_\\."
     INVALID_VER_CHARS = %w[> < = ~ !]
     DEFAULT_VER = ">= 0"
 
@@ -17,10 +18,10 @@ module Lapidarius
       token.match(/^No gems found matching/) do |m|
         fail NotInstalledError, token.gsub(/\/|\^|\$/, '')
       end
-      token.match(/Gem ([a-zA-Z0-9\-_]+)-(.+)/) do |m|
+      token.match(/Gem ([#{VALID_CHARS}]+)-(.+)/) do |m|
         return new(name: m[1], version: m[2])
       end
-      token.match(/([a-zA-Z0-9\-_]+) \((.+)\)/) do |m|
+      token.match(/([#{VALID_CHARS}]+) \((.+)\)/) do |m|
         return new(name: m[1], version: m[2])
       end
       fail KindError, "no gem can be created from #{token}"
